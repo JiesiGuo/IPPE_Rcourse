@@ -32,7 +32,6 @@ pisa<-read.csv("PISA12-AUS-motivation.csv")
 ```{r}
 # convert to local data frame
 pisa <- tbl_df(pisa)
-pisa <- pisa[,-1]  # remove the first colomn
 # printing only shows 10 rows and as many columns as can fit on your screen
 pisa
 ```
@@ -43,13 +42,13 @@ pisa
 # you can specify that you want to see more rows
 print(pisa, n=20)
 # specify that you want to see ALL rows (don't run this!)
-print(pisa, n = Inf)
+#print(pisa, n = Inf)
 # specify that you want to see ALL columns
-print(pisa, width = Inf)
+#print(pisa, width = Inf)
 # convert to a normal data frame to see all of the columns
-data.frame(head(flights))
+#data.frame(head(flights))
 # show up to 1000 rows and all columns
-flights %>% View()
+#flights %>% View()
 
 # set option to set numbers of columns and rows you want to see
 options(dplyr.width = 20, dplyr.print_min = 20)

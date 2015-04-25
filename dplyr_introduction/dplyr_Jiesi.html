@@ -93,23 +93,22 @@ pisa&lt;-read.csv(&quot;PISA12-AUS-motivation.csv&quot;)</code></pre>
 </ul>
 <pre class="r"><code># convert to local data frame
 pisa &lt;- tbl_df(pisa)
-pisa &lt;- pisa[,-1]  # remove the first colomn
 # printing only shows 10 rows and as many columns as can fit on your screen
 pisa</code></pre>
-<pre><code>## Source: local data frame [14,481 x 38]
+<pre><code>## Source: local data frame [14,481 x 37]
 ## 
-##     X SCHOOLID     Schtype State StIDStd Gender ST42Q02 ST42Q04 ST42Q06
-## 1   1        1 independent   VIC       1      1       4       2       1
-## 2   2        1 independent   VIC       2      1       4       1       2
-## 3   3        1 independent   VIC       3      1      NA      NA      NA
-## 4   4        1 independent   VIC       4      2      NA      NA      NA
-## 5   5        1 independent   VIC       5      2       3       3       2
-## 6   6        1 independent   VIC       6      1       4       1       1
-## 7   7        1 independent   VIC       7      1       3       2       3
-## 8   8        1 independent   VIC       8      2       4       1       2
-## 9   9        1 independent   VIC       9      2       3       2       2
-## 10 10        1 independent   VIC      10      2       3       2       2
-## .. ..      ...         ...   ...     ...    ...     ...     ...     ...
+##    SCHOOLID     Schtype State StIDStd Gender ST42Q02 ST42Q04 ST42Q06
+## 1         1 independent   VIC       1      1       4       2       1
+## 2         1 independent   VIC       2      1       4       1       2
+## 3         1 independent   VIC       3      1      NA      NA      NA
+## 4         1 independent   VIC       4      2      NA      NA      NA
+## 5         1 independent   VIC       5      2       3       3       2
+## 6         1 independent   VIC       6      1       4       1       1
+## 7         1 independent   VIC       7      1       3       2       3
+## 8         1 independent   VIC       8      2       4       1       2
+## 9         1 independent   VIC       9      2       3       2       2
+## 10        1 independent   VIC      10      2       3       2       2
+## ..      ...         ...   ...     ...    ...     ...     ...     ...
 ## Variables not shown: ST42Q07 (int), ST29Q01 (int), ST29Q02 (int), ST29Q03
 ##   (int), ST29Q04 (int), ST29Q05 (int), ST29Q06 (int), ST29Q07 (int),
 ##   ST29Q08 (int), ANXMAT (dbl), ESCS (dbl), INSTMOT (dbl), INTMAT (dbl),
@@ -122,13 +121,13 @@ pisa</code></pre>
 <pre class="r"><code># you can specify that you want to see more rows
 print(pisa, n=20)
 # specify that you want to see ALL rows (don't run this!)
-print(pisa, n = Inf)
+#print(pisa, n = Inf)
 # specify that you want to see ALL columns
-print(pisa, width = Inf)
+#print(pisa, width = Inf)
 # convert to a normal data frame to see all of the columns
-data.frame(head(flights))
+#data.frame(head(flights))
 # show up to 1000 rows and all columns
-flights %&gt;% View()
+#flights %&gt;% View()
 
 # set option to set numbers of columns and rows you want to see
 options(dplyr.width = 20, dplyr.print_min = 20)
@@ -150,17 +149,17 @@ options(dplyr.width = NULL, dplyr.print_min = 10)</code></pre>
 pisa[pisa$Schtype==1 &amp; pisa$State==&quot;NSW&quot;, ]# Base R approach forces you to repeat the data frame's name</code></pre>
 <pre class="r"><code># dplyr approach
 filter(pisa, Schtype==1, State==&quot;NSW&quot;) # using comma or ampersand to represent AND condition </code></pre>
-<pre><code>## Source: local data frame [0 x 38]
+<pre><code>## Source: local data frame [0 x 37]
 ## 
-## Variables not shown: X (int), SCHOOLID (int), Schtype (fctr), State
-##   (fctr), StIDStd (int), Gender (int), ST42Q02 (int), ST42Q04 (int),
-##   ST42Q06 (int), ST42Q07 (int), ST29Q01 (int), ST29Q02 (int), ST29Q03
-##   (int), ST29Q04 (int), ST29Q05 (int), ST29Q06 (int), ST29Q07 (int),
-##   ST29Q08 (int), ANXMAT (dbl), ESCS (dbl), INSTMOT (dbl), INTMAT (dbl),
-##   MATBEH (dbl), MATHEFF (dbl), MATINTFC (dbl), MATWKETH (dbl), OPENPS
-##   (dbl), PERSEV (dbl), SCMAT (dbl), SUBNORM (dbl), PV1MATH (dbl), PV1READ
-##   (dbl), PV1SCIE (dbl), ST48Q01 (int), ST48Q02 (int), ST48Q03 (int),
-##   ST48Q04 (int), ST48Q05 (int)</code></pre>
+## Variables not shown: SCHOOLID (int), Schtype (fctr), State (fctr), StIDStd
+##   (int), Gender (int), ST42Q02 (int), ST42Q04 (int), ST42Q06 (int),
+##   ST42Q07 (int), ST29Q01 (int), ST29Q02 (int), ST29Q03 (int), ST29Q04
+##   (int), ST29Q05 (int), ST29Q06 (int), ST29Q07 (int), ST29Q08 (int),
+##   ANXMAT (dbl), ESCS (dbl), INSTMOT (dbl), INTMAT (dbl), MATBEH (dbl),
+##   MATHEFF (dbl), MATINTFC (dbl), MATWKETH (dbl), OPENPS (dbl), PERSEV
+##   (dbl), SCMAT (dbl), SUBNORM (dbl), PV1MATH (dbl), PV1READ (dbl), PV1SCIE
+##   (dbl), ST48Q01 (int), ST48Q02 (int), ST48Q03 (int), ST48Q04 (int),
+##   ST48Q05 (int)</code></pre>
 </div>
 <div id="chaining---the-key-feature-of-dplyr" class="section level2">
 <h2>“Chaining” - the key feature of dplyr</h2>
@@ -283,21 +282,21 @@ pisa %&gt;% summarise(mean_math = mean(PV1MATH), mean_msc = mean(SCMAT, na.rm = 
 </ul>
 <pre class="r"><code># local data frame is the same as the original one except for grouping State and Schtype
 pisa %&gt;% group_by(State,Schtype) </code></pre>
-<pre><code>## Source: local data frame [14,481 x 39]
+<pre><code>## Source: local data frame [14,481 x 38]
 ## Groups: State, Schtype
 ## 
-##     X SCHOOLID     Schtype State StIDStd Gender ST42Q02 ST42Q04 ST42Q06
-## 1   1        1 independent   VIC       1      1       4       2       1
-## 2   2        1 independent   VIC       2      1       4       1       2
-## 3   3        1 independent   VIC       3      1      NA      NA      NA
-## 4   4        1 independent   VIC       4      2      NA      NA      NA
-## 5   5        1 independent   VIC       5      2       3       3       2
-## 6   6        1 independent   VIC       6      1       4       1       1
-## 7   7        1 independent   VIC       7      1       3       2       3
-## 8   8        1 independent   VIC       8      2       4       1       2
-## 9   9        1 independent   VIC       9      2       3       2       2
-## 10 10        1 independent   VIC      10      2       3       2       2
-## .. ..      ...         ...   ...     ...    ...     ...     ...     ...
+##    SCHOOLID     Schtype State StIDStd Gender ST42Q02 ST42Q04 ST42Q06
+## 1         1 independent   VIC       1      1       4       2       1
+## 2         1 independent   VIC       2      1       4       1       2
+## 3         1 independent   VIC       3      1      NA      NA      NA
+## 4         1 independent   VIC       4      2      NA      NA      NA
+## 5         1 independent   VIC       5      2       3       3       2
+## 6         1 independent   VIC       6      1       4       1       1
+## 7         1 independent   VIC       7      1       3       2       3
+## 8         1 independent   VIC       8      2       4       1       2
+## 9         1 independent   VIC       9      2       3       2       2
+## 10        1 independent   VIC      10      2       3       2       2
+## ..      ...         ...   ...     ...    ...     ...     ...     ...
 ## Variables not shown: ST42Q07 (int), ST29Q01 (int), ST29Q02 (int), ST29Q03
 ##   (int), ST29Q04 (int), ST29Q05 (int), ST29Q06 (int), ST29Q07 (int),
 ##   ST29Q08 (int), ANXMAT (dbl), ESCS (dbl), INSTMOT (dbl), INTMAT (dbl),
