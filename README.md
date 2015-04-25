@@ -26,7 +26,7 @@ library(devtools) #if you haven't installed it, need `install.packages("devtools
 
 Links to topics
 --------------------
-[dpyr introduction](http://127.0.0.1:5049/dplyr_Jiesi.Rmd)
+[dpyr introduction](http://nbviewer.ipython.org/github/JiesiGuo/IPPE_Rcourse/blob/master/dplyr_introduction/dplyr_Jiesi.ipynb)
 
 [Structural equation modelling](http://nbviewer.ipython.org/github/pdparker/rcourse/blob/master/SEM.ipynb)
 
