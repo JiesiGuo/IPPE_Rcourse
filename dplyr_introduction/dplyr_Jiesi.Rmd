@@ -32,7 +32,6 @@ pisa<-read.csv("PISA12-AUS-motivation.csv")
 ```{r}
 # convert to local data frame
 pisa <- tbl_df(pisa)
-pisa <- pisa[,-1] # remove the first colomn
 # printing only shows 10 rows and as many columns as can fit on your screen
 pisa
 ```
