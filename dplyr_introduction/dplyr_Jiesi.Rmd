@@ -32,6 +32,7 @@ pisa<-read.csv("PISA12-AUS-motivation.csv")
 ```{r}
 # convert to local data frame
 pisa <- tbl_df(pisa)
+pisa <- pisa[,-1] # remove the first colomn
 # printing only shows 10 rows and as many columns as can fit on your screen
 pisa
 ```
@@ -230,7 +231,6 @@ models <- pisa %>%
           )
 ```
 
-
 ```{r}
 # create a function to extract path coefficients, standard error, t-value and p-value
 coef_df <- function(x) {
@@ -274,7 +274,7 @@ left_join(a, b)
 
 ## References and Recourse
 * [dplyr reference manual and vignettes](http://cran.r-project.org/web/packages/dplyr/)
-* [dplyr video tutorial One by Kevin Markham] https://www.youtube.com/watch?v=jWjqLW-u3hc&list=PL5-da3qGB5IBM6DdZ-ZV8mA0oV0U56xaq
-* [dplyr video tutorial Two by Kevin Markham] https://www.youtube.com/watch?v=2mh1PqfsXVI&list=PL5-da3qGB5IBM6DdZ-ZV8mA0oV0U56xaq
+* [dplyr tutorial One by Kevin Markham] https://www.youtube.com/watch?v=jWjqLW-u3hc&list=PL5-da3qGB5IBM6DdZ-ZV8mA0oV0U56xaq
+* [dplyr tutorial Two by Kevin Markham] https://www.youtube.com/watch?v=2mh1PqfsXVI&list=PL5-da3qGB5IBM6DdZ-ZV8mA0oV0U56xaq
 * [dplyr Cheat Sheet](http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
 * [dplyr GitHub repo](https://github.com/hadley/dplyr) 

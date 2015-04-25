@@ -93,6 +93,7 @@ pisa&lt;-read.csv(&quot;PISA12-AUS-motivation.csv&quot;)</code></pre>
 </ul>
 <pre class="r"><code># convert to local data frame
 pisa &lt;- tbl_df(pisa)
+pisa &lt;- pisa[,-1] # remove the first colomn
 # printing only shows 10 rows and as many columns as can fit on your screen
 pisa</code></pre>
 <pre><code>## Source: local data frame [14,481 x 37]
@@ -109,8 +110,8 @@ pisa</code></pre>
 ## 9         1 independent   VIC       9      2       3       2       2
 ## 10        1 independent   VIC      10      2       3       2       2
 ## ..      ...         ...   ...     ...    ...     ...     ...     ...
-## Variables not shown: ST42Q07 (int), ST29Q01 (int), ST29Q02 (int), ST29Q03
-##   (int), ST29Q04 (int), ST29Q05 (int), ST29Q06 (int), ST29Q07 (int),
+## Variables not shown: ST42Q07 (int), ST29Q01 (int), ST29Q03 (int), ST29Q04
+##   (int), ST29Q06 (int), ST29Q02 (int), ST29Q05 (int), ST29Q07 (int),
 ##   ST29Q08 (int), ANXMAT (dbl), ESCS (dbl), INSTMOT (dbl), INTMAT (dbl),
 ##   MATBEH (dbl), MATHEFF (dbl), MATINTFC (dbl), MATWKETH (dbl), OPENPS
 ##   (dbl), PERSEV (dbl), SCMAT (dbl), SUBNORM (dbl), PV1MATH (dbl), PV1READ
@@ -153,8 +154,8 @@ filter(pisa, Schtype==1, State==&quot;NSW&quot;) # using comma or ampersand to r
 ## 
 ## Variables not shown: SCHOOLID (int), Schtype (fctr), State (fctr), StIDStd
 ##   (int), Gender (int), ST42Q02 (int), ST42Q04 (int), ST42Q06 (int),
-##   ST42Q07 (int), ST29Q01 (int), ST29Q02 (int), ST29Q03 (int), ST29Q04
-##   (int), ST29Q05 (int), ST29Q06 (int), ST29Q07 (int), ST29Q08 (int),
+##   ST42Q07 (int), ST29Q01 (int), ST29Q03 (int), ST29Q04 (int), ST29Q06
+##   (int), ST29Q02 (int), ST29Q05 (int), ST29Q07 (int), ST29Q08 (int),
 ##   ANXMAT (dbl), ESCS (dbl), INSTMOT (dbl), INTMAT (dbl), MATBEH (dbl),
 ##   MATHEFF (dbl), MATINTFC (dbl), MATWKETH (dbl), OPENPS (dbl), PERSEV
 ##   (dbl), SCMAT (dbl), SUBNORM (dbl), PV1MATH (dbl), PV1READ (dbl), PV1SCIE
@@ -297,8 +298,8 @@ pisa %&gt;% group_by(State,Schtype) </code></pre>
 ## 9         1 independent   VIC       9      2       3       2       2
 ## 10        1 independent   VIC      10      2       3       2       2
 ## ..      ...         ...   ...     ...    ...     ...     ...     ...
-## Variables not shown: ST42Q07 (int), ST29Q01 (int), ST29Q02 (int), ST29Q03
-##   (int), ST29Q04 (int), ST29Q05 (int), ST29Q06 (int), ST29Q07 (int),
+## Variables not shown: ST42Q07 (int), ST29Q01 (int), ST29Q03 (int), ST29Q04
+##   (int), ST29Q06 (int), ST29Q02 (int), ST29Q05 (int), ST29Q07 (int),
 ##   ST29Q08 (int), ANXMAT (dbl), ESCS (dbl), INSTMOT (dbl), INTMAT (dbl),
 ##   MATBEH (dbl), MATHEFF (dbl), MATINTFC (dbl), MATWKETH (dbl), OPENPS
 ##   (dbl), PERSEV (dbl), SCMAT (dbl), SUBNORM (dbl), PV1MATH (dbl), PV1READ
