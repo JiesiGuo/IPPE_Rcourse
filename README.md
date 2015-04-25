@@ -9,7 +9,7 @@ Introduction
 -------------
 
 * Introduction `sjPlot` package
-* INtroduction `dplyr` package - make data munipulation earier
+* Introduction `dplyr` package - make data munipulation earier
 * Introduction Rotation
 
 ### Package installation
