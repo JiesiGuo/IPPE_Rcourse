@@ -171,6 +171,7 @@ filter(pisa, Schtype==1, State==&quot;NSW&quot;) # using comma or ampersand to r
 # x %&gt;% f(y) %&gt;% g(z) equal to g(f(x,y),z)</code></pre>
 <pre class="r"><code># to view all students in NSW and VIC 
 pisa %&gt;% filter (State==&quot;NSW&quot; | State==&quot;VIC&quot;) #using pipe for OR condition
+filter (pisa, State==&quot;NSW&quot; | State==&quot;VIC&quot;)
 # you can also use %in% operator
 pisa %&gt;% filter (State %in% c(&quot;NSW&quot;, &quot;VIC&quot;))</code></pre>
 <div id="other-examples-for-selecting-colomns" class="section level3">

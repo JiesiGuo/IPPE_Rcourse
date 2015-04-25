@@ -86,6 +86,7 @@ filter(pisa, Schtype==1, State=="NSW") # using comma or ampersand to represent A
 ```{r eval=FALSE}
 # to view all students in NSW and VIC 
 pisa %>% filter (State=="NSW" | State=="VIC") #using pipe for OR condition
+filter (pisa, State=="NSW" | State=="VIC")
 # you can also use %in% operator
 pisa %>% filter (State %in% c("NSW", "VIC"))
 ```
