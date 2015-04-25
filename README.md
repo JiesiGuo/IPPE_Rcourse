@@ -21,9 +21,6 @@ install.packages("sjmisc") # somes functions in `stjlot` have been moved into th
 install.packages("dplyr")
 ```
 
-library(devtools) #if you haven't installed it, need `install.packages("devtools")`
-
-
 Links to topics
 --------------------
 [dpyr introduction](http://nbviewer.ipython.org/github/JiesiGuo/IPPE_Rcourse/blob/master/dplyr_introduction/dplyr_Jiesi.ipynb)
