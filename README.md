@@ -11,7 +11,7 @@ Introduction
 
 * Introduction `dplyr` package 
 * Introduction `sjPlot` package
-* Introduction EFA 
+* Introduction Exploratory Factor Analysis (EFA) 
 
 ### Package installation
 
@@ -25,9 +25,9 @@ install.packages("psych")
 
 Links to topics
 --------------------
-[dpyr introduction](http://nbviewer.ipython.org/github/JiesiGuo/IPPE_Rcourse/blob/master/dplyr_introduction/dplyr_Jiesi.ipynb)
+[dpyr Introduction](http://nbviewer.ipython.org/github/JiesiGuo/IPPE_Rcourse/blob/master/dplyr_introduction/dplyr_Jiesi.ipynb)
 
-[Missing data via multiple imputations](http://nbviewer.ipython.org/github/pdparker/rcourse/blob/master/Missing%20Data.ipynb)
+[sjPlot Introduction](https://raw.githubusercontent.com/JiesiGuo/IPPE_Rcourse/master/sjPlot_Jiesi/sjPlot_Jiesi.html)
 
-[Exploratory Factor Analysis](http://nbviewer.ipython.org/github/JiesiGuo/IPPE_Rcourse/blob/master/EFA_introduction/EFA_Jiesi.ipynb)
+[EFA Introduction](http://nbviewer.ipython.org/github/JiesiGuo/IPPE_Rcourse/blob/master/EFA_introduction/EFA_Jiesi.ipynb)
 
