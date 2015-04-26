@@ -29,5 +29,5 @@ Links to topics
 
 [sjPlot Introduction](https://rawgit.com/JiesiGuo/IPPE_Rcourse/master/sjPlot_Introduction/sjPlot_Jiesi.html)
 
-[EFA Introduction](http://nbviewer.ipython.org/github/JiesiGuo/IPPE_Rcourse/blob/master/EFA_introduction/EFA_Jiesi.ipynb)
+[EFA Introduction](https://rawgit.com/JiesiGuo/IPPE_Rcourse/master/EFA_introduction/EFA_Jiesi.html)
 
