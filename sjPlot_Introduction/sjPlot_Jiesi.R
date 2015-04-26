@@ -106,6 +106,7 @@ sjp.glm(model3,
         type = "prob",
         show.se = TRUE)
 # plot ramdon effects of linear mixed effects using `sjp.lmer`
+library(lme4)
 pisa1 <-pisa[as.numeric(pisa$SCHOOLID) < 21, ] # select the first 20 classes
 modelRandomInt <- lmer(MATWKETH ~ SCMAT + INTMAT + INSTMOT + (1|SCHOOLID) , data = pisa1)
 summary(modelRandomInt)
