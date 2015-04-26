@@ -35,4 +35,4 @@ pisa_cor <- corFiml(pisa_efa) # convert the raw data to correlation matrix uisng
 unrotated <- fa(pisa_cor, 3, rotate="none", n.obs = 14481)
 out_varimax <- fa(pisa_cor, 3, rotate="varimax",n.obs = 14481)
 out_promax <- fa(pisa_cor, 3, rotate="promax",n.obs = 14481)
-out_targetQ <- fa(pisa_cor,3,rotate="TargetQ",n.obs = 14481,Target=Targ_key, missing = TRUE) #TargetT for orthogonal rotation
+out_targetQ <- fa(pisa_cor,3,rotate="TargetQ",n.obs = 14481,Target=Targ_key) #TargetT for orthogonal rotation
