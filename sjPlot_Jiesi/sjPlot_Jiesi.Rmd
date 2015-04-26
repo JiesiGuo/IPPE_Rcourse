@@ -1,0 +1,226 @@
+---
+title: "sjPlot Introduction"
+output: html_document
+---
+
+## Description 
+Providing plotting and table output functions for data visualization. Results of a variety of statical analyses can be visualized using this package (particularly for people coming from SPSS and/or who are new to R). 
+
+## stPlot functionality
+*Reading and writing data from (SPSS, SAS and STATA) with variable and value labels (e.g., `read_spss`, `write_spss`)
+*Providing SPSS-like output for simple description (`sjt.df`), cross tabulated (`sjp.xtab`,`sjt.xtab`), frequencies (`sjp.frq`, `sjt.frq`), histograms, box plots, correlation matrices (`sjt.corr`), PCA (`sjp.pca`, `sjt.pca`), etc.
+*Ploting and summarising the outputs for linear regression model with interaction (`sjp.lm`,  `sjp.int`, `sjt.lm`), generalized linear regression models (`sjp.glm`) and multilevel reggression model (`sjp.lmer`, `sjt.glmer`), etc. 
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
+                     warning=FALSE, message=FALSE)
+```
+
+```{r package_options, include=FALSE}
+knitr::opts_knit$set(progress = TRUE, verbose = TRUE)
+```
+
+##Installation
+
+```{r,load_packages}
+# load packages
+library(sjPlot)
+library(sjmisc)
+```
+
+```{r, results='hide'}
+pisa<-read_spss("PISA12-AUS-motivation.sav", 
+                enc="UTF-8",                # character encoding
+                autoAttachVarLabels = TRUE) # attach variable labels
+```
+There are `r nrow(pisa)` individuals.
+* overview your data using `view_spss` and `sjt.df`
+```{r,eval=FALSE}
+view_spss(pisa[,1:8],
+          #  showFreq = TRUE, 
+          #  showPerc = TRUE
+)
+```
+`r view_spss(pisa[,1:8], no.output = TRUE)$knitr`
+
+```{r, eval=FALSE}
+# display data description like 'describe' function in 'psych' package
+sjt.df(pisa[,10:15])
+```
+`r sjt.df(pisa[,10:15],no.output=TRUE)$knitr`
+```{r eval=FALSE}
+# print correlation 
+sjt.corr(pisa[,20:28], 
+         fadeNS = FALSE,  
+         pvaluesAsNumbers = TRUE,  # FALSE: significant levels are indicated by asterisks
+         showPValues = TRUE       # show exact pvalues
+         #triangle = "lower"      # print the values in the lower triangle of the table
+         # val.rm = 0.1           # specify a value where correlation values are not printed to the table
+)
+```
+`r sjt.corr(pisa[,20:28], 
+         fadeNS = FALSE,  
+         pvaluesAsNumbers = TRUE, 
+         showPValues = TRUE)$knitr` 
+* print summaries of linear models using `sjt.lm`
+```{r}
+# model1: math behavior is predicted by math self-concept, interest value, intrinsic value and gender
+model1 <- lm(MATBEH ~ SCMAT + INTMAT + INSTMOT + Gender, data=pisa)
+# model2: math workethic is predicted by math self-concept, interest value, intrinsic value and gender
+model2 <- lm(MATWKETH ~ SCMAT + INTMAT + INSTMOT + Gender, data=pisa)
+```
+
+```{r, eval=FALSE}
+sjt.lm(model1, model2)
+```
+`r sjt.lm(model1, model2, no.output = TRUE)$knitr`
+
+```{r}
+# add custom labels and convert to APA output
+sjt.lm(model1, model2,
+       showHeaderStrings = TRUE,
+       stringB = "Estimate",
+       showStdBeta = TRUE,
+#       stringCI = "Conf. Int.",
+       pvaluesAsNumbers = FALSE,
+       showStdError = TRUE,
+       showConfInt = FALSE,
+       stringDependentVariables = "Outcomes",
+       stringPredictors = "Predictors",
+       labelDependentVariables = c("Math behaviors", 
+                                  "Math work ethic")
+#      CSS = list(css.topcontentborder = "+font-size: 0px;")  # remove intercept
+#      remove.estimates = 2  # remove the second coefficient after intercept
+       )       
+```
+`r sjt.lm(model1, model2,
+       showHeaderStrings = TRUE,
+       stringB = "Estimate",
+       showStdBeta = TRUE,
+       pvaluesAsNumbers = FALSE,
+       showStdError = TRUE,
+       showConfInt = FALSE,
+       stringDependentVariables = "Outcomes",
+       stringPredictors = "Predictors",
+       labelDependentVariables = c("Math behaviors", 
+                                  "Math work ethic"))$knitr`
+                                  
+* another package [texteg](http://cran.r-project.org/web/packages/texreg/texreg.pdf) - extract output from a vast majority of models                                  
+```{r eval=FALSE}
+# extract similar output using `texreg`
+install.packages("texreg")
+library(texreg)
+screenreg(list(
+  extract(model1, summaries = c("Observations", "CFI", "SRMR")),
+  extract(model2, summaries = c("Observations", "CFI", "SRMR"))),
+  single.row=TRUE)
+```
+
+*  plot coefficients of linear model using `sjp.lm`
+```{r}
+sjp.lm(model1, type = "std") # plot standardized coefficients
+```
+```{r eval=FALSE}
+# testing model assumption including (tests for outliers, multicollinearity, non-normality of residual and outliers, non-normlity of residual, homoscedasticity)
+sjp.lm(model1, type = "ma",
+       showOriginalModelOnly = TRUE) # FLASE: the following graphical tests will be both applied to the original and to the updated model
+# investigate each single predictor of the model
+sjp.lm(model1, type = "pred")         
+```
+
+* plotting interaction using `sjp.int`, which accepts _lm_, _glm_ and _lme4_.[see more examples](http://www.strengejacke.de/sjPlot/sjp.int/)
+```{r eval = FALSE}
+install.packages("effects") 
+```
+```{r}
+#Plotting interaction betweenn self-concept and intrinsic value in preiding math workethic
+mod_inter <- lm(scale(MATWKETH) ~ scale(SCMAT)*scale(INSTMOT), data=pisa, x = TRUE)
+sjt.lm(mod_inter)
+library(effects)
+sjp.int(mod_inter, type = "eff",
+        #showValueLabels = TRUE, # show value labels
+        #showCI = TRUE           # show confidence interval
+        moderatorValues = "meansd") #use the mean as well as one standard deviation above and below the mean value.
+```
+
+* provide an base-graphic-example for simple-slopes plot 
+```{r eval=FALSE}
+f1<- function(x)(.38)*x+(.34)*(+1)+(.07)*(+1)*x
+f2<- function(x)(.38)*x+(.34)*0+(.07)*(0)*x
+f3<- function(x)(.38)*x+(.34)*(-1)+(.07)*(-1)*x
+
+plot(f1, from=-1, to=1, lty=1,lwd=3, add=TRUE, ylab="MATWKETH (SD)", xlab="SCMAT (SD)", xlim=c(-1,1), ylim=c(-1,1))
+plot(f2, from=-1, to=1, lty=3,lwd=3, add=TRUE, ylab="MATWKETH (SD)", xlab="SCMAT (SD)", xlim=c(-1,1), ylim=c(-1,1))
+plot(f3, from=-1, to=1, lty=5,lwd=3, add=TRUE, ylab="MATWKETH (SD)", xlab="SCMAT (SD)", xlim=c(-1,1), ylim=c(-1,1))
+legend("topleft", lty=c(1,2,3),lwd=c(3,3,3),legend=c('INSTMOT = +1SD','INSTMOT = Mean','INSTMOT = -1SD'))
+```
+* summaries odds ratios (forest plots) of generalized linear models using `sjt.glm`
+```{r}
+# outcome: ST48Q01 - "Intention to attend Math vs. Language courses after school"
+#          ST48Q03 - "Intention to study hard in Math vs. language classes"
+model3 <- glm(ST48Q01 ~ SCMAT + INTMAT + INSTMOT + Gender, data=pisa, family = binomial(link = "logit"))
+model4 <- glm(ST48Q03 ~ SCMAT + INTMAT + INSTMOT + Gender, data=pisa, family = binomial(link = "logit"))
+#summary(fit4)
+```
+```{r eval = FALSE}
+sjt.glm(model3,model4, 
+        labelDependentVariables = c("Intention to attend Math vs. Language courses after school", 
+                                    "Intention to study hard in Math vs. language classes"))
+```
+`r sjt.glm(model3,model4, 
+        labelDependentVariables = c("Intention to attend Math vs. Language courses after school", 
+                                    "Intention to study hard in Math vs. language classes"))$knitr`
+
+* plot probability curves of predictors using `sjp.glm`
+```{r}
+#The odds ratios for continous predictors are a bit more difficult to interprete than categorial variables. Thus, you can also plot probability curves of all predictors (covariates, coefficients)
+sjp.glm(model3,
+        axisLabels.y = predlab,
+        type = "prob",
+        show.se = TRUE)
+```
+* plot ramdon effects of linear mixed effects using `sjp.lmer`
+```{r}
+pisa1 <-pisa[as.numeric(pisa$SCHOOLID) < 21, ] # select the first 20 classes
+modelRandomInt <- lmer(MATWKETH ~ SCMAT + INTMAT + INSTMOT + (1|SCHOOLID) , data = pisa1)
+summary(modelRandomInt)
+```
+
+```{r}
+# plot standardized fixed effects
+sjp.lmer(modelRandomInt, type = "fe.std")
+# plot fixed effects depending on group levels
+sjp.lmer(modelRandomInt, type = "fe.ri",
+        vars = "SCMAT") # only for predictior math self-concept
+```
+* view ramdom effets of linear mixed effects using `sjp.lmer`
+```{r}
+modelRandomSlope <- lmer(MATWKETH ~ SCMAT + INTMAT + INSTMOT + (SCMAT + INTMAT + INSTMOT|SCHOOLID) , data = pisa1)
+summary(modelRandomSlope)
+#Lets compare a random intercept to a random slope model
+anova(modelRandomInt, modelRandomSlope)
+# plot standardized fixed effects
+sjp.lmer(modelRandomInt, type = "fe.std")
+# View random effects 
+sjp.lmer(modelRandomSlope)
+# note: random effects can not be ploted in this version
+```
+* Plotting random effects of generalized linear mixed effects models using [sjp.glmer] (http://www.strengejacke.de/sjPlot/sjp.glmer/) (not cover here)
+* polt principal component analyses (PCA) using `sjp.pca`
+```{r}
+# we need to specify the items which are used in PCA
+# recveive first item of scale containing self-concept, intrinsic value and utility value
+start <- which(colnames(pisa)=="ST42Q02")
+# recveive last item of scale containing self-concept, intrinsic value and utility value
+end <- which(colnames(pisa)=="ST29Q08")
+```
+```{r eval=FALSE}
+sjt.pca(pisa[,c(start:end)], 
+        numberOfFactors = 3,
+        showVariance=TRUE)
+
+```
+`r sjt.pca(pisa[,c(start:end)], 
+        numberOfFactors = 3,
+        showVariance=TRUE)$knitr`
+

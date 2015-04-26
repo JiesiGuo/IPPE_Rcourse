@@ -1,15 +1,16 @@
 
 Links to data
 -------------
+[PISA AUS motivation csv Data](https://www.dropbox.com/s/2r5tvgw3wgrauzp/PISA12-AUS-motivation.csv?dl=0)
+
 [PISA AUS motivation SPSS Data](https://www.dropbox.com/s/w6q1z2zo0h6bm5f/PISA12-AUS-motivation.sav?dl=0)
 
-[PISA AUS motivation csv Data](https://www.dropbox.com/s/2r5tvgw3wgrauzp/PISA12-AUS-motivation.csv?dl=0)
 
 Introduction
 -------------
 
+* Introduction `dplyr` package 
 * Introduction `sjPlot` package
-* Introduction `dplyr` package - make data munipulation earier
 * Introduction EFA 
 
 ### Package installation
