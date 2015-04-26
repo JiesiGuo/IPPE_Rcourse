@@ -25,8 +25,7 @@ Links to topics
 --------------------
 [dpyr introduction](http://nbviewer.ipython.org/github/JiesiGuo/IPPE_Rcourse/blob/master/dplyr_introduction/dplyr_Jiesi.ipynb)
 
-[Structural equation modelling](http://nbviewer.ipython.org/github/pdparker/rcourse/blob/master/SEM.ipynb)
-
 [Missing data via multiple imputations](http://nbviewer.ipython.org/github/pdparker/rcourse/blob/master/Missing%20Data.ipynb)
 
+[Exploratory Factor Analysis](http://nbviewer.ipython.org/github/JiesiGuo/IPPE_Rcourse/blob/master/EFA_introduction/EFA_Jiesi.ipynb)
 
