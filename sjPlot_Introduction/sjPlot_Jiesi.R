@@ -113,6 +113,8 @@ summary(modelRandomInt)
 
 # plot standardized fixed effects
 sjp.lmer(modelRandomInt, type = "fe.std")
+# plot random intercept across groups
+sjp.lmer(modelRandomInt)
 # plot fixed effects depending on group levels
 sjp.lmer(modelRandomInt, type = "fe.ri",
         vars = "SCMAT") # only for predictior math self-concept
