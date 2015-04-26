@@ -202,5 +202,9 @@ end <- which(colnames(pisa)=="ST29Q08")
 sjt.pca(pisa[,c(start:end)], 
         numberOfFactors = 3,
         showVariance=TRUE)
-
-
+```
+## References and Recourse
+* [djPlot reference manual and vignettes](http://cran.r-project.org/web/packages/sjPlot/sjPlot.pdf)
+* [Documentation and examples](http://www.strengejacke.de/sjPlot/)
+* [sjPlot GitHub repo](https://github.com/sjPlot/devel) 
+* [sjmisc GitHub repo](https://github.com/sjPlot/sjmisc)
