@@ -25,7 +25,7 @@ install.packages("psych")
 
 Links to topics
 --------------------
-[dpyr Introduction](http://nbviewer.ipython.org/github/JiesiGuo/IPPE_Rcourse/blob/master/dplyr_introduction/dplyr_Jiesi.ipynb)
+[dpyr Introduction](https://rawgit.com/JiesiGuo/IPPE_Rcourse/master/dplyr_introduction/dplyr_Jiesi.html)
 
 [sjPlot Introduction](https://rawgit.com/JiesiGuo/IPPE_Rcourse/master/sjPlot_Introduction/sjPlot_Jiesi.html)
 
