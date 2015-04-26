@@ -27,7 +27,7 @@ Links to topics
 --------------------
 [dpyr Introduction](http://nbviewer.ipython.org/github/JiesiGuo/IPPE_Rcourse/blob/master/dplyr_introduction/dplyr_Jiesi.ipynb)
 
-[sjPlot Introduction](https://raw.githubusercontent.com/JiesiGuo/IPPE_Rcourse/master/sjPlot_Jiesi/sjPlot_Jiesi.html)
+[sjPlot Introduction](https://github.com/JiesiGuo/IPPE_Rcourse/blob/master/sjPlot_Introduction/sjPlot_Jiesi.Rmd)
 
 [EFA Introduction](http://nbviewer.ipython.org/github/JiesiGuo/IPPE_Rcourse/blob/master/EFA_introduction/EFA_Jiesi.ipynb)
 
