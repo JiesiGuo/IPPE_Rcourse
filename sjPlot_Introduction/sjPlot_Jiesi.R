@@ -118,15 +118,17 @@ sjp.lmer(modelRandomInt)
 # plot fixed effects depending on group levels
 sjp.lmer(modelRandomInt, type = "fe.ri",
         vars = "SCMAT") # only for predictior math self-concept
+
 # view ramdom effets of linear mixed effects using `sjp.lmer`
 modelRandomSlope <- lmer(MATWKETH ~ SCMAT + INTMAT + INSTMOT + (SCMAT + INTMAT + INSTMOT|SCHOOLID) , data = pisa1)
 summary(modelRandomSlope)
 #Lets compare a random intercept to a random slope model
 anova(modelRandomInt, modelRandomSlope)
 # plot standardized fixed effects
-sjp.lmer(modelRandomInt, type = "fe.std")
-# View random effects 
+sjp.lmer(modelRandomSlope, type = "fe.std")
+# View random effects across groups
 sjp.lmer(modelRandomSlope)
+
 # note: random effects can not be ploted in this version
 # Plotting random effects of generalized linear mixed effects models using [sjp.glmer] (http://www.strengejacke.de/sjPlot/sjp.glmer/) (not cover here)
 # polt principal component analyses (PCA) using `sjp.pca`

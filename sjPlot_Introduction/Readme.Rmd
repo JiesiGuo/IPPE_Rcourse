@@ -170,6 +170,9 @@ summary(modelRandomInt)
 ```{r}
 # plot standardized fixed effects
 sjp.lmer(modelRandomInt, type = "fe.std")
+```
+
+```{r}
 # plot random intercept across groups
 sjp.lmer(modelRandomInt)
 # plot fixed effects depending on group levels
@@ -183,8 +186,8 @@ summary(modelRandomSlope)
 #Lets compare a random intercept to a random slope model
 anova(modelRandomInt, modelRandomSlope)
 # plot standardized fixed effects
-sjp.lmer(modelRandomInt, type = "fe.std")
-# View random effects 
+sjp.lmer(modelRandomSlope, type = "fe.std")
+# View random effects across groups
 sjp.lmer(modelRandomSlope)
 # note: random effects can not be ploted in this version
 ```
