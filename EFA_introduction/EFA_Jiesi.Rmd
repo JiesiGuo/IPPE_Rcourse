@@ -33,7 +33,7 @@ unrotated[c("loadings","score.cor", "TLI", "RMSEA")]
 out_varimax <- fa(pisa_efa, 3, rotate="varimax")
 out_varimax[c("loadings", "score.cor", "TLI", "RMSEA")]
 ```
-* oblique rotation: the factors are allowed to intercorrelated (i.e., permit factor axis orientations of less than 90 degrees)
+* oblique rotation: the factors are allowed to be intercorrelated (i.e., permit factor axis orientations of less than 90 degrees)
 ```{r}
 out_promax <- fa(pisa_efa, 3, rotate="promax")
 out_promax[c("loadings", "score.cor", "TLI", "RMSEA")]

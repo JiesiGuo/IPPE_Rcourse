@@ -20,7 +20,7 @@ unrotated[c("loadings","score.cor", "TLI", "RMSEA")]
 * orthogonal rotation: the factors are constrianed to be uncorrelated (i.e., factors are oriented at 90 degrees angle in multidimensional space)
 out_varimax <- fa(pisa_efa, 3, rotate="varimax")
 out_varimax[c("loadings", "score.cor", "TLI", "RMSEA")]
-* oblique rotation: the factors are allowed to intercorrelated (i.e., permit factor axis orientations of less than 90 degrees)
+* oblique rotation: the factors are allowed to be intercorrelated (i.e., permit factor axis orientations of less than 90 degrees)
 out_promax <- fa(pisa_efa, 3, rotate="promax")
 out_promax[c("loadings", "score.cor", "TLI", "RMSEA")]
 
