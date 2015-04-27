@@ -241,7 +241,7 @@ coef_df <- function(x) {
 models %>% do(coef_df(.$output))
 ```
 
-```{r, eval=FALSE}
+```{r}
 # the easy way to extract similar output by using `tidy` function in broom package
 #install.packages("broom") 
 library(broom)

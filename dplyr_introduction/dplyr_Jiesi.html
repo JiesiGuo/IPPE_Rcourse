@@ -479,6 +479,16 @@ models %&gt;% do(coef_df(.$output))</code></pre>
 #install.packages(&quot;broom&quot;) 
 library(broom)
 models %&gt;% do(tidy(.$output)) #`tidy` function can be used for different types of regression models</code></pre>
+<pre><code>## Source: local data frame [6 x 5]
+## Groups: &lt;by row&gt;
+## 
+##          term  estimate std.error statistic       p.value
+## 1 (Intercept) 502.71251  1.750104 287.24729  0.000000e+00
+## 2       SCMAT  42.06617  1.845120  22.79861 2.229305e-102
+## 3 (Intercept) 476.36895  1.168895 407.53786  0.000000e+00
+## 4       SCMAT  43.62363  1.250909  34.87355 1.722351e-241
+## 5 (Intercept) 531.78694  1.947377 273.07860  0.000000e+00
+## 6       SCMAT  46.69097  2.010283  23.22607 1.136833e-103</code></pre>
 </div>
 <div id="joining-merging-data-frames" class="section level2">
 <h2>Joining (merging) data frames</h2>
