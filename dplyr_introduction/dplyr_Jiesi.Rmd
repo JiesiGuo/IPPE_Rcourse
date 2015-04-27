@@ -218,7 +218,7 @@ pisa1 %>%
 ## `do` allows you to apply one unnamed argument 
 ```{r}
 # for each of school type, do simple regression of math achievement on self-concept 
-models <- pisa %>% 
+pisa %>% 
   			group_by(Schtype) %>%
   			do(
    			 output = lm(PV1MATH ~ SCMAT, data = .)

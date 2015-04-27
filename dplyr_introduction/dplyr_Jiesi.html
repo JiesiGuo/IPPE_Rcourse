@@ -441,12 +441,19 @@ pisa1 %&gt;%
 <div id="do-allows-you-to-apply-one-unnamed-argument" class="section level2">
 <h2><code>do</code> allows you to apply one unnamed argument</h2>
 <pre class="r"><code># for each of school type, do simple regression of math achievement on self-concept 
-models &lt;- pisa %&gt;% 
+pisa %&gt;% 
             group_by(Schtype) %&gt;%
             do(
              output = lm(PV1MATH ~ SCMAT, data = .)
-             )
-# store to a new local data frame
+             )</code></pre>
+<pre><code>## Source: local data frame [3 x 2]
+## Groups: &lt;by row&gt;
+## 
+##   Schtype  output
+## 1       1 &lt;S3:lm&gt;
+## 2       2 &lt;S3:lm&gt;
+## 3       3 &lt;S3:lm&gt;</code></pre>
+<pre class="r"><code># store to a new local data frame
 models &lt;- pisa %&gt;% 
             group_by(Schtype) %&gt;%
             do(
