@@ -7,7 +7,7 @@ output: html_document
 * Providing plotting and table output functions for data visualization. Results of a variety of statical analyses can be visualized using this package (particularly for people coming from SPSS and/or who are new to R). 
 
 ## stPlot functionality
-* Reading and writing data from (SPSS, SAS and STATA) with variable and value labels (e.g., `read_spss`, `write_spss`)
+* Reading and writing data from SPSS, SAS and STATA with variable and value labels (e.g., `read_spss`, `write_spss`)
 * Providing SPSS-like output for simple description (`sjt.df`), cross tabulated (`sjp.xtab`,`sjt.xtab`), frequencies (`sjp.frq`, `sjt.frq`), histograms, box plots, correlation matrices (`sjt.corr`), PCA (`sjp.pca`, `sjt.pca`), etc.
 * Ploting and summarising the outputs for linear regression model with interaction (`sjp.lm`,  `sjp.int`, `sjt.lm`), generalized linear regression models (`sjp.glm`) and multilevel reggression model (`sjp.lmer`, `sjt.glmer`), etc. 
 
@@ -137,7 +137,7 @@ plot(f2, from=-1, to=1, lty=3,lwd=3, add=TRUE, ylab="MATWKETH (SD)", xlab="SCMAT
 plot(f3, from=-1, to=1, lty=5,lwd=3, add=TRUE, ylab="MATWKETH (SD)", xlab="SCMAT (SD)", xlim=c(-1,1), ylim=c(-1,1))
 legend("topleft", lty=c(1,2,3),lwd=c(3,3,3),legend=c('INSTMOT = +1SD','INSTMOT = Mean','INSTMOT = -1SD'))
 ```
-* summaries odds ratios (forest plots) of generalized linear models using `sjt.glm`
+* summarises odds ratios (forest plots) of generalized linear models using `sjt.glm`
 ```{r}
 # outcome: ST48Q01 - "Intention to attend Math vs. Language courses after school"
 #          ST48Q03 - "Intention to study hard in Math vs. language classes"
@@ -192,7 +192,7 @@ sjp.lmer(modelRandomSlope)
 # note: random effects can not be ploted in this version
 ```
 * Plotting random effects of generalized linear mixed effects models using [sjp.glmer] (http://www.strengejacke.de/sjPlot/sjp.glmer/) (not cover here)
-* polt principal component analyses (PCA) using `sjp.pca`
+* plot principal component analyses (PCA) using `sjp.pca`
 ```{r}
 # we need to specify the items which are used in PCA
 # recveive first item of scale containing self-concept, intrinsic value and utility value

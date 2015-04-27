@@ -77,14 +77,12 @@ img {
 <h2>dplyr functionality</h2>
 <ul>
 <li>Five basic verbs: <code>filter</code>, <code>select</code>, <code>arrange</code>, <code>mutate</code>, <code>summarise</code> (plus <code>group_by</code>)</li>
-<li>Lots of handly functions (i.e., <code>mutate_each</code>, <code>summarise_each</code>, <code>n_distinct</code>,<code>sample_n</code>)</li>
+<li>Lots of handy functions (i.e., <code>mutate_each</code>, <code>summarise_each</code>, <code>n_distinct</code>,<code>sample_n</code>)</li>
 <li>Joining (merging) data frames: <code>left_join</code>, <code>right_join</code>, <code>inner_join</code>, <code>full_join</code>, <code>semi_join</code>, <code>anti_join</code></li>
 <li><a href="http://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html">Window function</a> for calculating ranking, offsets, and more (not covered below)</li>
-<li>Connecting to Databases using SQLite, PostgreSQL/Redshift, MySQL/MariaDB, BigQuery, MonetDB (not covered below)</li>
+<li><p>Connecting to Databases using SQLite, PostgreSQL/Redshift, MySQL/MariaDB, BigQuery, MonetDB (not covered below)</p></li>
+<li><p>load packages and an example dataset</p></li>
 </ul>
-</div>
-<div id="load-packages-and-an-example-dataset" class="section level1">
-<h1>load packages and an example dataset</h1>
 <pre class="r"><code>library(dplyr)
 pisa&lt;-read.csv(&quot;PISA12-AUS-motivation.csv&quot;)</code></pre>
 <ul>
@@ -134,6 +132,7 @@ options(dplyr.width = 20, dplyr.print_min = 20)
 # reset options (or just close R)
 options(dplyr.width = NULL, dplyr.print_min = 10)</code></pre>
 </div>
+</div>
 <div id="filter-keep-rows-matching-criteria" class="section level2">
 <h2>filter: Keep rows matching criteria</h2>
 <ul>
@@ -176,7 +175,7 @@ filter(pisa, Schtype==1, State==&quot;NSW&quot;) # using comma or ampersand to r
 <ul>
 <li>Can write commands in a natural order by using the <code>%&gt;%</code> infix/pipe operator imported from <a href="https://github.com/smbache/magrittr">magrittr</a> package (which can be pronounced as “then”)</li>
 </ul>
-<pre class="r"><code># take the thing on the lefe hand-side and insert it as the first argument on the right hand-side
+<pre class="r"><code># take the thing on the left hand-side and insert it as the first argument on the right hand-side
 # x %&gt;% f(y) equal to f(x,y)
 # x %&gt;% f(y) %&gt;% g(z) equal to g(f(x,y),z)</code></pre>
 <pre class="r"><code># to view all students in NSW and VIC 
@@ -184,8 +183,9 @@ pisa %&gt;% filter (State==&quot;NSW&quot; | State==&quot;VIC&quot;) #using pipe
 filter (pisa, State==&quot;NSW&quot; | State==&quot;VIC&quot;)
 # you can also use %in% operator
 pisa %&gt;% filter (State %in% c(&quot;NSW&quot;, &quot;VIC&quot;))</code></pre>
-<div id="other-examples-for-selecting-colomns" class="section level3">
-<h3>other examples for selecting colomns</h3>
+<ul>
+<li>other examples for selecting columns</li>
+</ul>
 <pre class="r"><code># between() is a concise alternative for determing if numeric values fall in a range
 # to view students having math scores from 300 to 500
 flights %&gt;% filter(between(PV1MATH, 300, 500))
@@ -193,7 +193,6 @@ flights %&gt;% filter(between(PV1MATH, 300, 500))
 # is.na() can also be useful when filtering
 # filliter ST42Q02 without missing value
 flights %&gt;% filter(!is.na(ST42Q02))</code></pre>
-</div>
 </div>
 <div id="select-pick-columns-by-name" class="section level2">
 <h2>select: Pick columns by name</h2>
@@ -364,9 +363,9 @@ pisa %&gt;%
 ## Variables not shown: PV1READ_min (dbl), PV1SCIE_min (dbl)</code></pre>
 <pre class="r"><code># if varibles with missing value, summarise_each(funs(min(., na.rm=TRUE), max(., na.rm=TRUE)), PV1MATH:PV1SCIE))</code></pre>
 <ul>
-<li><code>mutate_each</code> allows you to apply the same mutate function to multiple columns at once to create new viriables</li>
+<li><code>mutate_each</code> allows you to apply the same mutate function to multiple columns at once to create new variables</li>
 </ul>
-<pre class="r"><code># for each SCHOOLID, create the mean of student' math and science achievement for each students
+<pre class="r"><code># for each SCHOOLID, create the mean of students' math and science achievement for each student
 pisa1 &lt;- pisa %&gt;% select (SCHOOLID, PV1MATH:PV1SCIE) # reduce the size of data set for easy presentation in this case
 pisa1 %&gt;%
     group_by(SCHOOLID) %&gt;% 
@@ -407,7 +406,7 @@ pisa1 %&gt;%
 ## 10        1 613.4990 604.5681 638.6050  562.9605  626.0922
 ## ..      ...      ...      ...      ...       ...       ...</code></pre>
 <pre class="r"><code># when 2 functions are applied, variable names works fine
-# calculate the standardardized and centered scores of each student' read, math and science achievement 
+# calculate the standardardized and centered scores of each student's read, math and science achievement 
 pisa1 %&gt;%
     mutate_each(funs(std = scale(.), cent = scale(., scale = FALSE)), -SCHOOLID) %&gt;%
     print(width = Inf)</code></pre>
@@ -476,10 +475,10 @@ models %&gt;% do(coef_df(.$output))</code></pre>
 ## 4       SCMAT  43.62363 1.250909  34.87355 1.722351e-241
 ## 5 (Intercept) 531.78694 1.947377 273.07860  0.000000e+00
 ## 6       SCMAT  46.69097 2.010283  23.22607 1.136833e-103</code></pre>
-<pre class="r"><code># the easy way to extract simialr output by using `tidy` function in broom package
-install.packages(&quot;broom&quot;) 
+<pre class="r"><code># the easy way to extract similar output by using `tidy` function in broom package
+#install.packages(&quot;broom&quot;) 
 library(broom)
-models %&gt;% do(tidy(.$output))) #`tidy` function can be used for different types of regression models</code></pre>
+models %&gt;% do(tidy(.$output)) #`tidy` function can be used for different types of regression models</code></pre>
 </div>
 <div id="joining-merging-data-frames" class="section level2">
 <h2>Joining (merging) data frames</h2>
@@ -525,7 +524,6 @@ left_join(a, b)</code></pre>
 <li><a href="http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf">dplyr Cheat Sheet</a></li>
 <li><a href="https://github.com/hadley/dplyr">dplyr GitHub repo</a></li>
 </ul>
-</div>
 </div>
 
 

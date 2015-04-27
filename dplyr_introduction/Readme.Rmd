@@ -11,7 +11,7 @@ output: html_document
 
 ## dplyr functionality
 * Five basic verbs: `filter`, `select`, `arrange`, `mutate`, `summarise` (plus `group_by`)
-* Lots of handly functions (i.e., `mutate_each`, `summarise_each`, `n_distinct`,`sample_n`)
+* Lots of handy functions (i.e., `mutate_each`, `summarise_each`, `n_distinct`,`sample_n`)
 * Joining (merging) data frames: `left_join`, `right_join`, `inner_join`, `full_join`, `semi_join`, `anti_join`
 * [Window function](http://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html) for calculating ranking, offsets, and more (not covered below)
 * Connecting to Databases using SQLite, PostgreSQL/Redshift, MySQL/MariaDB, BigQuery, MonetDB (not covered below)
@@ -79,7 +79,7 @@ filter(pisa, Schtype==1, State=="NSW") # using comma or ampersand to represent A
 
 * Can write commands in a natural order by using the `%>%` infix/pipe operator imported from [magrittr](https://github.com/smbache/magrittr) package (which can be pronounced as "then")
 ```{r eval=FALSE}
-# take the thing on the lefe hand-side and insert it as the first argument on the right hand-side
+# take the thing on the left hand-side and insert it as the first argument on the right hand-side
 # x %>% f(y) equal to f(x,y)
 # x %>% f(y) %>% g(z) equal to g(f(x,y),z)
 
@@ -90,7 +90,7 @@ filter (pisa, State=="NSW" | State=="VIC")
 # you can also use %in% operator
 pisa %>% filter (State %in% c("NSW", "VIC"))
 ```
-### other examples for selecting colomns 
+### other examples for selecting columns 
 ```{r eval=FALSE}
 # between() is a concise alternative for determing if numeric values fall in a range
 # to view students having math scores from 300 to 500
@@ -190,10 +190,10 @@ pisa %>%
  	summarise_each(funs(max, min), PV1MATH:PV1SCIE)
 # if varibles with missing value, summarise_each(funs(min(., na.rm=TRUE), max(., na.rm=TRUE)), PV1MATH:PV1SCIE))
 ``` 	
-* `mutate_each` allows you to apply the same mutate function to multiple columns at once to create new viriables
+* `mutate_each` allows you to apply the same mutate function to multiple columns at once to create new variable
 
 ```{r }
-# for each SCHOOLID, create the mean of student' math and science achievement for each students
+# for each SCHOOLID, create the mean of students' math and science achievement for each student
 pisa1 <- pisa %>% select (SCHOOLID, PV1MATH:PV1SCIE) # reduce the size of data set for easy presentation in this case
 pisa1 %>%
  	group_by(SCHOOLID) %>% 
@@ -210,7 +210,7 @@ pisa1 %>%
 
 ```{r}
 # when 2 functions are applied, variable names works fine
-# calculate the standardardized and centered scores of each student' read, math and science achievement 
+# calculate the standardardized and centered scores of each student's read, math and science achievement 
 pisa1 %>%
     mutate_each(funs(std = scale(.), cent = scale(., scale = FALSE)), -SCHOOLID) %>%
     print(width = Inf)
@@ -242,10 +242,10 @@ models %>% do(coef_df(.$output))
 ```
 
 ```{r, eval=FALSE}
-# the easy way to extract simialr output by using `tidy` function in broom package
-install.packages("broom") 
+# the easy way to extract similar output by using `tidy` function in broom package
+#install.packages("broom") 
 library(broom)
-models %>% do(tidy(.$output))) #`tidy` function can be used for different types of regression models
+models %>% do(tidy(.$output)) #`tidy` function can be used for different types of regression models
 ```
 
 ## Joining (merging) data frames

@@ -89,7 +89,7 @@ plot(f1, from=-1, to=1, lty=1,lwd=3, add=TRUE, ylab="MATWKETH (SD)", xlab="SCMAT
 plot(f2, from=-1, to=1, lty=3,lwd=3, add=TRUE, ylab="MATWKETH (SD)", xlab="SCMAT (SD)", xlim=c(-1,1), ylim=c(-1,1))
 plot(f3, from=-1, to=1, lty=5,lwd=3, add=TRUE, ylab="MATWKETH (SD)", xlab="SCMAT (SD)", xlim=c(-1,1), ylim=c(-1,1))
 legend("topleft", lty=c(1,2,3),lwd=c(3,3,3),legend=c('INSTMOT = +1SD','INSTMOT = Mean','INSTMOT = -1SD'))
-# summaries odds ratios (forest plots) of generalized linear models using `sjt.glm`
+# summarises odds ratios (forest plots) of generalized linear models using `sjt.glm`
 # outcome: ST48Q01 - "Intention to attend Math vs. Language courses after school"
 #          ST48Q03 - "Intention to study hard in Math vs. language classes"
 model3 <- glm(ST48Q01 ~ SCMAT + INTMAT + INSTMOT + Gender, data=pisa, family = binomial(link = "logit"))
@@ -130,8 +130,8 @@ sjp.lmer(modelRandomSlope, type = "fe.std")
 sjp.lmer(modelRandomSlope)
 
 # note: random effects can not be ploted in this version
-# Plotting random effects of generalized linear mixed effects models using [sjp.glmer] (http://www.strengejacke.de/sjPlot/sjp.glmer/) (not cover here)
-# polt principal component analyses (PCA) using `sjp.pca`
+# Plotting random effects of generalized linear mixed effects models using [sjp.glmer](http://www.strengejacke.de/sjPlot/sjp.glmer/) (not cover here)
+# plot principal component analyses (PCA) using `sjp.pca`
 # we need to specify the items which are used in PCA
 # recveive first item of scale containing self-concept, intrinsic value and utility value
 start <- which(colnames(pisa)=="ST42Q02")

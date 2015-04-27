@@ -145,7 +145,7 @@ pisa1 %>%
 	mutate_each(funs(mean), mean_math = PV1MATH, mean_scie = PV1SCIE, -PV1READ) 
 
 # when 2 functions are applied, variable names works fine
-# calculate the standardardized and centered scores of each student' read, math and science achievement 
+# calculate the standardardized and centered scores of each student's read, math and science achievement 
 pisa1 %>%
     mutate_each(funs(std = scale(.), cent = scale(., scale = FALSE)), -SCHOOLID) %>%
     print(width = Inf)
@@ -172,9 +172,9 @@ coef_df <- function(x) {
 models %>% do(coef_df(.$output))
 
 # the easy way to extract simialr output by using `tidy` function in broom package
-install.packages("broom") 
+#install.packages("broom") 
 library(broom)
-models %>% do(tidy(.$output))) #`tidy` function can be used for different types of regression models
+models %>% do(tidy(.$output)) #`tidy` function can be used for different types of regression models
 
 ## Joining (merging) data frames
 
