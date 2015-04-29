@@ -81,8 +81,18 @@ img {
 ## The following object is masked from 'package:sjmisc':
 ## 
 ##     phi</code></pre>
-<pre class="r"><code>library(dplyr)
-# data preparation
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: 'dplyr'
+## 
+## The following object is masked from 'package:stats':
+## 
+##     filter
+## 
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code># data preparation
 pisa&lt;-read.csv(&quot;PISA12-AUS-motivation.csv&quot;)
 pisa_efa&lt;-pisa %&gt;% select (ST42Q02:ST29Q08) # select items measuring math self-concept, intrinsic value and utility value
 pisa_efa[,2:12] &lt;- apply(pisa_efa[,2:12], 2, function(x) x&lt;- 5-x) # reverse code for nagetively worded items (not necessary)</code></pre>
@@ -237,7 +247,9 @@ out_targetQ &lt;- fa(pisa_efa,3,rotate=&quot;TargetQ&quot;,Target=Targ_key, miss
 ## [1,] 1.0000000 0.6070132 0.6650307
 ## [2,] 0.6070132 1.0000000 0.4996774
 ## [3,] 0.6650307 0.4996774 1.0000000</code></pre>
-<p>*using correlation matrix and missing data is handled by FIML</p>
+<ul>
+<li>using correlation matrix and missing data is handled by FIML</li>
+</ul>
 <pre class="r"><code>pisa_cor &lt;- corFiml(pisa_efa) # convert the raw data to correlation matrix uisng FIML
 unrotated &lt;- fa(pisa_cor, 3, rotate=&quot;none&quot;, n.obs = 14481)
 out_varimax &lt;- fa(pisa_cor, 3, rotate=&quot;varimax&quot;,n.obs = 14481)
