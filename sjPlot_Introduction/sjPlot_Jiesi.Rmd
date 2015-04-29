@@ -41,12 +41,13 @@ view_spss(pisa[,1:8],
           #  showPerc = TRUE
 )
 ```
+`r view_spss(pisa[,1:8])$knitr`
 
 ```{r, eval=FALSE}
 # display data description like 'describe' function in 'psych' package
 sjt.df(pisa[,10:15])
 ```
-
+`r sjt.df(pisa[,10:15])$knitr`
 ```{r eval=FALSE}
 # print correlation 
 sjt.corr(pisa[,20:28], 
@@ -72,7 +73,7 @@ model2 <- lm(MATWKETH ~ SCMAT + INTMAT + INSTMOT + Gender, data=pisa)
 ```{r, eval=FALSE}
 sjt.lm(model1, model2)
 ```
-
+`r sjt.lm(model1, model2)$knitr`
 ```{r}
 # add custom labels and convert to APA output
 sjt.lm(model1, model2,
@@ -91,7 +92,18 @@ sjt.lm(model1, model2,
 #      remove.estimates = 2  # remove the second coefficient after intercept
        )       
 ```
-                                  
+`r sjt.lm(model1, model2,
+       showHeaderStrings = TRUE,
+       stringB = "Estimate",
+       showStdBeta = TRUE,
+#       stringCI = "Conf. Int.",
+       pvaluesAsNumbers = FALSE,
+       showStdError = TRUE,
+       showConfInt = FALSE,
+       stringDependentVariables = "Outcomes",
+       stringPredictors = "Predictors",
+       labelDependentVariables = c("Math behaviors", 
+                                  "Math work ethic"))$knitr`                                         
 * another package [texteg](http://cran.r-project.org/web/packages/texreg/texreg.pdf) - extract output from a vast majority of models                                  
 ```{r eval=FALSE}
 # extract similar output using `texreg`
@@ -123,6 +135,9 @@ install.packages("effects")
 #Plotting interaction betweenn self-concept and intrinsic value in preiding math workethic
 mod_inter <- lm(scale(MATWKETH) ~ scale(SCMAT)*scale(INSTMOT), data=pisa, x = TRUE)
 sjt.lm(mod_inter)
+```
+`r sjt.lm(mod_inter)$knitr`
+```{r}
 library(effects)
 sjp.int(mod_inter, type = "eff",
         #showValueLabels = TRUE, # show value labels
@@ -154,7 +169,9 @@ sjt.glm(model3,model4,
         labelDependentVariables = c("Intention to attend Math vs. Language courses after school", 
                                     "Intention to study hard in Math vs. language classes"))
 ```
-
+`r sjt.glm(model3,model4, 
+        labelDependentVariables = c("Intention to attend Math vs. Language courses after school", 
+                                    "Intention to study hard in Math vs. language classes"))$knitr`
 * plot probability curves of predictors using `sjp.glm`
 ```{r}
 #The odds ratios for continous predictors are a bit more difficult to interprete than categorial variables. Thus, you can also plot probability curves of all predictors (covariates, coefficients)
