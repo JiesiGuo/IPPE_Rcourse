@@ -47,7 +47,7 @@ Targ_key <- list(Targ_key)
 out_targetQ <- fa(pisa_efa,3,rotate="TargetQ",Target=Targ_key, missing = TRUE) #TargetT for orthogonal rotation
 out_targetQ[c("loadings", "score.cor")]
 ```
-*using correlation matrix  and missing data is handled by FIML
+* using correlation matrix  and missing data is handled by FIML
 ```{r eval = FALSE}
 pisa_cor <- corFiml(pisa_efa) # convert the raw data to correlation matrix uisng FIML
 unrotated <- fa(pisa_cor, 3, rotate="none", n.obs = 14481)
