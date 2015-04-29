@@ -18,7 +18,8 @@ Introduction
 ```r
 install.packages("devtools") #if you haven't installed it.
 devtools::install_github("sjPlot/devel") #  install the latest development snapshot of `sjPlot`
-install.packages("sjmisc") # somes functions in `stjlot` have been moved into the sjmisc-package
+install.packages("sjmisc") # somes functions in `sjPlot` have been moved into the sjmisc-package
+install.packages("effects") # plot interaction effects based on `sjPlot`	
 install.packages("dplyr")
 install.packages("psych")
 ```
