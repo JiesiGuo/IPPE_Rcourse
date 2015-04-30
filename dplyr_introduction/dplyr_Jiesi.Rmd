@@ -24,7 +24,7 @@ knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
 * load packages and an example dataset
 ```{r}
 library(dplyr)
-pisa<-read.csv("PISA12-AUS-motivation.csv")
+pisa<-read.csv("PISA12-AUS-motivation.csv", stringsAsFactors = FALSE)
 ```
 * `tbl_df` creates a "local data frame"
 * Local data frame is simply a wrapper for a data frame that is easier to examine.

@@ -84,7 +84,7 @@ img {
 <li><p>load packages and an example dataset</p></li>
 </ul>
 <pre class="r"><code>library(dplyr)
-pisa&lt;-read.csv(&quot;PISA12-AUS-motivation.csv&quot;)</code></pre>
+pisa&lt;-read.csv(&quot;PISA12-AUS-motivation.csv&quot;, stringsAsFactors = FALSE)</code></pre>
 <ul>
 <li><code>tbl_df</code> creates a “local data frame”</li>
 <li>Local data frame is simply a wrapper for a data frame that is easier to examine.</li>
