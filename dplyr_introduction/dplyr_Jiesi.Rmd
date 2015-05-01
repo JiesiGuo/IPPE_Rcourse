@@ -13,8 +13,8 @@ output: html_document
 * Five basic verbs: `filter`, `select`, `arrange`, `mutate`, `summarise` (plus `group_by`)
 * Lots of handy functions (i.e., `mutate_each`, `summarise_each`, `n_distinct`,`sample_n`)
 * Joining (merging) data frames: `left_join`, `right_join`, `inner_join`, `full_join`, `semi_join`, `anti_join`
-* [Window function](http://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html) for calculating ranking, offsets, and more (not covered below)
-* Connecting to Databases using SQLite, PostgreSQL/Redshift, MySQL/MariaDB, BigQuery, MonetDB (not covered below)
+* [Window function](http://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html) for calculating ranking, offsets, and more (not covered below; see [vignette for window-functions](https://github.com/hadley/dplyr/blob/master/vignettes/window-functions.Rmd))
+* Connecting to Databases using SQLite, PostgreSQL/Redshift, MySQL/MariaDB, BigQuery, MonetDB (not covered below; see [vignette for database](http://rpubs.com/justmarkham/dplyr-tutorial))
 
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
@@ -269,7 +269,7 @@ inner_join(a, b)
 #include all observations found in "a"
 left_join(a, b)
 ```
-* see [vignettes](https://github.com/hadley/dplyr/blob/master/vignettes/two-table.Rmd) for `right_join`, `left_join`, `semi_join` and `anti_join`
+* see [vignette for two-tables](https://github.com/hadley/dplyr/blob/master/vignettes/two-table.Rmd) for `right_join`, `left_join`, `semi_join` and `anti_join`
 
 ## Combining data frames
 ```{r}

@@ -79,8 +79,8 @@ img {
 <li>Five basic verbs: <code>filter</code>, <code>select</code>, <code>arrange</code>, <code>mutate</code>, <code>summarise</code> (plus <code>group_by</code>)</li>
 <li>Lots of handy functions (i.e., <code>mutate_each</code>, <code>summarise_each</code>, <code>n_distinct</code>,<code>sample_n</code>)</li>
 <li>Joining (merging) data frames: <code>left_join</code>, <code>right_join</code>, <code>inner_join</code>, <code>full_join</code>, <code>semi_join</code>, <code>anti_join</code></li>
-<li><a href="http://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html">Window function</a> for calculating ranking, offsets, and more (not covered below)</li>
-<li><p>Connecting to Databases using SQLite, PostgreSQL/Redshift, MySQL/MariaDB, BigQuery, MonetDB (not covered below)</p></li>
+<li><a href="http://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html">Window function</a> for calculating ranking, offsets, and more (not covered below; see <a href="https://github.com/hadley/dplyr/blob/master/vignettes/window-functions.Rmd">vignette for window-functions</a>)</li>
+<li><p>Connecting to Databases using SQLite, PostgreSQL/Redshift, MySQL/MariaDB, BigQuery, MonetDB (not covered below; see <a href="http://rpubs.com/justmarkham/dplyr-tutorial">vignette for database</a>)</p></li>
 <li><p>load packages and an example dataset</p></li>
 </ul>
 <pre class="r"><code>library(dplyr)
@@ -522,7 +522,7 @@ left_join(a, b)</code></pre>
 ## 2  blue   5    I
 ## 3   red   6   NA</code></pre>
 <ul>
-<li>see <a href="https://github.com/hadley/dplyr/blob/master/vignettes/two-table.Rmd">vignettes</a> for <code>right_join</code>, <code>left_join</code>, <code>semi_join</code> and <code>anti_join</code></li>
+<li>see <a href="https://github.com/hadley/dplyr/blob/master/vignettes/two-table.Rmd">vignette for two-tables</a> for <code>right_join</code>, <code>left_join</code>, <code>semi_join</code> and <code>anti_join</code></li>
 </ul>
 </div>
 <div id="combining-data-frames" class="section level2">
