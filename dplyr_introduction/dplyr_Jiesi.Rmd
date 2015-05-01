@@ -269,7 +269,7 @@ inner_join(a, b)
 #include all observations found in "a"
 left_join(a, b)
 ```
-* see [vignettes](https://github.com/hadley/dplyr/blob/master/vignettes/two-table.Rmd) for `right_join`, `left_join`, `semi_join` and anti_join`
+* see [vignettes](https://github.com/hadley/dplyr/blob/master/vignettes/two-table.Rmd) for `right_join`, `left_join`, `semi_join` and `anti_join`
 
 ## Combining data frames
 ```{r}
