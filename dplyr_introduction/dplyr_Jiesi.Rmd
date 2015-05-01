@@ -271,6 +271,19 @@ left_join(a, b)
 ```
 * see [dplyr Cheat Sheet](http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf) for `right_join`, `left_join`, `semi_join` and anti_join`
 
+## Combining data frames
+```{r}
+# create a simple dataframe
+mydata <- data.frame(
+  x = 1:3,
+  y = c("a", "b", "c"),
+  stringsAsFactors = FALSE) 
+str(mydata)
+
+bind_cols(mydata, data.frame(z = 3:1)) # when combinding column-wise,the number of rows must match, but row names are ignored
+bind_rows(mydata, data.frame(x = 10, y = "z")) # when combinding row-wise, both the number and names of columns much match
+```
+* use`rbind_all` to combind multiple data frames like `do.call(rbind, )`
 
 ## References and Recourse
 * [dplyr reference manual and vignettes](http://cran.r-project.org/web/packages/dplyr/)
