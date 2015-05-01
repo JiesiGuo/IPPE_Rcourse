@@ -280,8 +280,10 @@ mydata <- data.frame(
   stringsAsFactors = FALSE) 
 str(mydata)
 
-bind_cols(mydata, data.frame(z = 3:1)) # when combinding column-wise,the number of rows must match, but row names are ignored
-bind_rows(mydata, data.frame(x = 10, y = "z")) # when combinding row-wise, both the number and names of columns much match
+# when combinding column-wise,the number of rows must match, but row names are ignored
+bind_cols(mydata, data.frame(z = 3:1)) 
+# when combinding row-wise, both the number and names of columns much match
+bind_rows(mydata, data.frame(x = 10, y = "z")) 
 ```
 * use`rbind_all` to combind multiple data frames like `do.call(rbind, )`
 
