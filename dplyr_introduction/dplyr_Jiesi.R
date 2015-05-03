@@ -104,6 +104,11 @@ pisa %>%
 # store the new variable
 pisa <- pisa %>% mutate(diff_ach = PV1MATH - PV1SCIE) 
 
+# `transmute` will let you use newly create variables in the same function which is creating the variable in the first place.
+pisa %>% 
+    select(PV1MATH, PV1SCIE) %>%
+    mutate(diff_ach = PV1MATH - PV1SCIE, ratio = diff_ach/PV1MATH, ratio2 = diff_ach/ratio)
+
 ## summarise: Reduce variables to values
 
 # summary the mean of math achievement and math self-concept
@@ -191,4 +196,18 @@ inner_join(a, b)
 
 #include all observations found in "a"
 left_join(a, b)
+```
 
+## Combining data frames
+```{r}
+# create a simple dataframe
+mydata <- data.frame(
+  x = 1:3,
+  y = c("a", "b", "c"),
+  stringsAsFactors = FALSE) 
+str(mydata)
+# when combinding column-wise,the number of rows must match, but row names are ignored
+bind_cols(mydata, data.frame(z = 3:1)) 
+# when combinding row-wise, both the number and names of columns much match
+bind_rows(mydata, data.frame(x = 10, y = "z")) 
+* use`rbind_all` to combind multiple data frames like `do.call(rbind, )`

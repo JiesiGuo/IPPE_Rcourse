@@ -153,6 +153,12 @@ pisa %>%
 # store the new variable
 pisa <- pisa %>% mutate(diff_ach = PV1MATH - PV1SCIE) 
 ```
+* `transmute` will let you use newly create variables in the same function which is creating the variable in the first place.
+```{r}
+pisa %>% 
+    select(PV1MATH, PV1SCIE) %>%
+    mutate(diff_ach = PV1MATH - PV1SCIE, ratio = diff_ach/PV1MATH, ratio2 = diff_ach/ratio)
+```
 
 ## summarise: Reduce variables to values
 

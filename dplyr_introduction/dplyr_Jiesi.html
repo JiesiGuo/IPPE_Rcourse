@@ -275,6 +275,26 @@ pisa %&gt;%
 ## ..      ...      ...       ...</code></pre>
 <pre class="r"><code># store the new variable
 pisa &lt;- pisa %&gt;% mutate(diff_ach = PV1MATH - PV1SCIE) </code></pre>
+<ul>
+<li><code>transmute</code> will let you use newly create variables in the same function which is creating the variable in the first place.</li>
+</ul>
+<pre class="r"><code>pisa %&gt;% 
+    select(PV1MATH, PV1SCIE) %&gt;%
+    mutate(diff_ach = PV1MATH - PV1SCIE, ratio = diff_ach/PV1MATH, ratio2 = diff_ach/ratio)</code></pre>
+<pre><code>## Source: local data frame [14,481 x 5]
+## 
+##     PV1MATH  PV1SCIE  diff_ach       ratio   ratio2
+## 1  561.5439 583.4950  -21.9511 -0.03909062 561.5439
+## 2  564.8154 627.3219  -62.5065 -0.11066713 564.8154
+## 3  507.3298 556.1731  -48.8433 -0.09627524 507.3298
+## 4  601.7370 668.3514  -66.6144 -0.11070351 601.7370
+## 5  520.1823 573.6106  -53.4283 -0.10271072 520.1823
+## 6  586.7035 599.0675  -12.3640 -0.02107368 586.7035
+## 7  659.2226 751.0630  -91.8404 -0.13931622 659.2226
+## 8  656.0290 760.4812 -104.4522 -0.15921888 656.0290
+## 9  487.1553 565.9642  -78.8089 -0.16177367 487.1553
+## 10 613.4990 638.6050  -25.1060 -0.04092264 613.4990
+## ..      ...      ...       ...         ...      ...</code></pre>
 </div>
 <div id="summarise-reduce-variables-to-values" class="section level2">
 <h2>summarise: Reduce variables to values</h2>
@@ -374,16 +394,16 @@ pisa1 %&gt;%
 ## Groups: SCHOOLID
 ## 
 ##    SCHOOLID  PV1MATH  PV1READ  PV1SCIE
-## 1         1 562.9605 582.3127 626.0922
-## 2         1 562.9605 616.7858 626.0922
-## 3         1 562.9605 583.9807 626.0922
-## 4         1 562.9605 649.7978 626.0922
-## 5         1 562.9605 554.1258 626.0922
-## 6         1 562.9605 595.0217 626.0922
-## 7         1 562.9605 705.5102 626.0922
-## 8         1 562.9605 701.6837 626.0922
-## 9         1 562.9605 541.8560 626.0922
-## 10        1 562.9605 604.5681 626.0922
+## 1         1 626.0922 582.3127 626.0922
+## 2         1 626.0922 616.7858 626.0922
+## 3         1 626.0922 583.9807 626.0922
+## 4         1 626.0922 649.7978 626.0922
+## 5         1 626.0922 554.1258 626.0922
+## 6         1 626.0922 595.0217 626.0922
+## 7         1 626.0922 705.5102 626.0922
+## 8         1 626.0922 701.6837 626.0922
+## 9         1 626.0922 541.8560 626.0922
+## 10        1 626.0922 604.5681 626.0922
 ## ..      ...      ...      ...      ...</code></pre>
 <pre class="r"><code>#Here a small bug: when only 1 function is applied, dplyr will keep the orignal names</code></pre>
 <pre class="r"><code># What you can do to avoid this is specifying names of each variable manually 

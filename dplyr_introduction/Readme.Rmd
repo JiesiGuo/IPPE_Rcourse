@@ -153,7 +153,12 @@ pisa %>%
 # store the new variable
 pisa <- pisa %>% mutate(diff_ach = PV1MATH - PV1SCIE) 
 ```
-
+* `transmute` will let you use newly create variables in the same function which is creating the variable in the first place.
+```{r}
+pisa %>% 
+    select(PV1MATH, PV1SCIE) %>%
+    mutate(diff_ach = PV1MATH - PV1SCIE, ratio = diff_ach/PV1MATH, ratio2 = diff_ach/ratio)
+```
 ## summarise: Reduce variables to values
 
 ```{r}
@@ -269,7 +274,8 @@ inner_join(a, b)
 #include all observations found in "a"
 left_join(a, b)
 ```
-* see [dplyr Cheat Sheet](http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf) for `right_join`, `left_join`, `semi_join` and anti_join`
+
+* see [vignette for two-tables](https://github.com/hadley/dplyr/blob/master/vignettes/two-table.Rmd) for `right_join`, `left_join`, `semi_join` and `anti_join`
 
 ## Combining data frames
 ```{r}
