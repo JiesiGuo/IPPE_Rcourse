@@ -74,25 +74,9 @@ img {
 <li>oblique : e.g., <em>promax</em>, <em>oblimin</em>, <em>simplimax</em>, _bentlerQ, <em>geominQ</em> and <em>biquartimin</em> and <em>cluster</em>, <em>target</em></li>
 <li>the rotation does not alter the fit of the factor solution</li>
 </ul>
-<pre class="r"><code>library(psych)</code></pre>
-<pre><code>## 
-## Attaching package: 'psych'
-## 
-## The following object is masked from 'package:sjmisc':
-## 
-##     phi</code></pre>
-<pre class="r"><code>library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: 'dplyr'
-## 
-## The following object is masked from 'package:stats':
-## 
-##     filter
-## 
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code># data preparation
+<pre class="r"><code>library(psych)
+library(dplyr)
+# data preparation
 pisa&lt;-read.csv(&quot;PISA12-AUS-motivation.csv&quot;)
 pisa_efa&lt;-pisa %&gt;% select (ST42Q02:ST29Q08) # select items measuring math self-concept, intrinsic value and utility value
 pisa_efa[,2:12] &lt;- apply(pisa_efa[,2:12], 2, function(x) x&lt;- 5-x) # reverse code for nagetively worded items (not necessary)</code></pre>
@@ -217,9 +201,8 @@ out_promax[c(&quot;loadings&quot;, &quot;score.cor&quot;, &quot;TLI&quot;, &quot
 <pre class="r"><code>Targ_key &lt;- make.keys(12,list(f1=1:4,f2=5:8,f3=9:12))
 Targ_key &lt;- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
 Targ_key &lt;- list(Targ_key)
-out_targetQ &lt;- fa(pisa_efa,3,rotate=&quot;TargetQ&quot;,Target=Targ_key, missing = TRUE) #TargetT for orthogonal rotation</code></pre>
-<pre><code>## Loading required namespace: GPArotation</code></pre>
-<pre class="r"><code>out_targetQ[c(&quot;loadings&quot;, &quot;score.cor&quot;)]</code></pre>
+out_targetQ &lt;- fa(pisa_efa,3,rotate=&quot;TargetQ&quot;,Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c(&quot;loadings&quot;, &quot;score.cor&quot;,&quot;TLI&quot;, &quot;RMSEA&quot;)]</code></pre>
 <pre><code>## $loadings
 ## 
 ## Loadings:
@@ -246,7 +229,14 @@ out_targetQ &lt;- fa(pisa_efa,3,rotate=&quot;TargetQ&quot;,Target=Targ_key, miss
 ##           [,1]      [,2]      [,3]
 ## [1,] 1.0000000 0.6070132 0.6650307
 ## [2,] 0.6070132 1.0000000 0.4996774
-## [3,] 0.6650307 0.4996774 1.0000000</code></pre>
+## [3,] 0.6650307 0.4996774 1.0000000
+## 
+## $TLI
+## [1] 0.9839724
+## 
+## $RMSEA
+##      RMSEA      lower      upper confidence 
+## 0.04523403 0.04284491 0.04764259 0.10000000</code></pre>
 <ul>
 <li>using correlation matrix and missing data is handled by FIML</li>
 </ul>

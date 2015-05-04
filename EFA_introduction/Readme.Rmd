@@ -44,8 +44,8 @@ out_promax[c("loadings", "score.cor", "TLI", "RMSEA")]
 Targ_key <- make.keys(12,list(f1=1:4,f2=5:8,f3=9:12))
 Targ_key <- scrub(Targ_key,isvalue=1)  #fix the 0s, allow the NAs to be estimated
 Targ_key <- list(Targ_key)
-out_targetQ <- fa(pisa_efa,3,rotate="TargetQ",Target=Targ_key, missing = TRUE) #TargetT for orthogonal rotation
-out_targetQ[c("loadings", "score.cor")]
+out_targetQ <- fa(pisa_efa,3,rotate="TargetQ",Target=Targ_key) #TargetT for orthogonal rotation
+out_targetQ[c("loadings", "score.cor", "TLI", "RMSEA"))]
 ```
 * using correlation matrix  and missing data is handled by FIML
 ```{r eval = FALSE}
