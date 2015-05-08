@@ -123,9 +123,9 @@ print(pisa, n=20)
 # specify that you want to see ALL columns
 #print(pisa, width = Inf)
 # convert to a normal data frame to see all of the columns
-#data.frame(head(flights))
+#data.frame(head(pisa))
 # show up to 1000 rows and all columns
-#flights %&gt;% View()
+#pisa %&gt;% View()
 
 # set option to set numbers of columns and rows you want to see
 options(dplyr.width = 20, dplyr.print_min = 20)
@@ -188,11 +188,11 @@ pisa %&gt;% filter (State %in% c(&quot;NSW&quot;, &quot;VIC&quot;))</code></pre>
 </ul>
 <pre class="r"><code># between() is a concise alternative for determing if numeric values fall in a range
 # to view students having math scores from 300 to 500
-flights %&gt;% filter(between(PV1MATH, 300, 500))
+pisa %&gt;% filter(between(PV1MATH, 300, 500))
 
 # is.na() can also be useful when filtering
 # filliter ST42Q02 without missing value
-flights %&gt;% filter(!is.na(ST42Q02))</code></pre>
+pisa %&gt;% filter(!is.na(ST42Q02))</code></pre>
 </div>
 <div id="select-pick-columns-by-name" class="section level2">
 <h2>select: Pick columns by name</h2>
