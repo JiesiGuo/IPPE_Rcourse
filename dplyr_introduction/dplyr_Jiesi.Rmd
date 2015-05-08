@@ -7,7 +7,7 @@ output: html_document
 * created by Hadley Wickham (Chief Scientist of Rstudio, author of `ggplot`, `tidyr`)
 * Great for data exploration and transformation
 * Intuitive to write and easy to read, especially when using the "chaining (%>%)" syntax 
-* Faster than basic R appraoch
+* Faster than basic R approach
 
 ## dplyr functionality
 * Five basic verbs: `filter`, `select`, `arrange`, `mutate`, `summarise` (plus `group_by`)
