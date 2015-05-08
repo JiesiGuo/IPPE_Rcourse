@@ -4,7 +4,7 @@ output: html_document
 ---
 
 ## Description of dplyr
-* created by Hadley Wickham (Chief Scientist of Rstudio, author of `ggplot`, `tidyr`)
+* created by Hadley Wickham (Chief Scientist of Rstudio, author of `ggplot`, `tidyr`, `broom`)
 * Great for data exploration and transformation
 * Intuitive to write and easy to read, especially when using the "chaining (%>%)" syntax 
 * Faster than basic R approach
