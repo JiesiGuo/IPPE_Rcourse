@@ -121,10 +121,11 @@ select(pisa, matches("^ST\\d{2}"))  # Matches any regular expression.
 # x %>% f(y) equal to f(x,y)
 # x %>% f(y) %>% g(z) equal to g(f(x,y),z)
 ```
-```(r results='hide')
+```{r results='hide'}
 # nesing method to select State and PV1MATH columns and filter for PV1MATH over 400
 filter(select(pisa, State, PV1MATH), PV1MATH > 400)
 ```
+
 ```{r}
 # chaining method
 pisa %>%
