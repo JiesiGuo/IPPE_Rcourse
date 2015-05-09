@@ -67,6 +67,7 @@ options(dplyr.width = NULL, dplyr.print_min = 10)
 ```{r eval=FALSE}
 # base R approach to view all students in catholic school in NSW
 pisa[pisa$Schtype==1 & pisa$State=="NSW", ]# Base R approach forces you to repeat the data frame's name
+# schtype: 1. catholic, 2. government, 3. independent
 ```
 
 ```{r}
@@ -74,31 +75,21 @@ pisa[pisa$Schtype==1 & pisa$State=="NSW", ]# Base R approach forces you to repea
 filter(pisa, Schtype==1, State=="NSW") # using comma or ampersand to represent AND condition 
 ```
 
-
-## "Chaining" - the key feature of dplyr
-
-* Can write commands in a natural order by using the `%>%` infix/pipe operator imported from [magrittr](https://github.com/smbache/magrittr) package (which can be pronounced as "then")
-```{r eval=FALSE}
-# take the thing on the left hand-side and insert it as the first argument on the right hand-side
-# x %>% f(y) equal to f(x,y)
-# x %>% f(y) %>% g(z) equal to g(f(x,y),z)
-
 ```{r eval=FALSE}
 # to view all students in NSW and VIC 
-pisa %>% filter (State=="NSW" | State=="VIC") #using pipe for OR condition
 filter (pisa, State=="NSW" | State=="VIC")
 # you can also use %in% operator
-pisa %>% filter (State %in% c("NSW", "VIC"))
+filter (pisa, State %in% c("NSW", "VIC"))
 ```
 * other examples for selecting columns 
 ```{r eval=FALSE}
 # between() is a concise alternative for determing if numeric values fall in a range
 # to view students having math scores from 300 to 500
-pisa %>% filter(between(PV1MATH, 300, 500))
+filter(pisa, between(PV1MATH, 300, 500))
 
 # is.na() can also be useful when filtering
 # filliter ST42Q02 without missing value
-pisa %>% filter(!is.na(ST42Q02))
+filter(pisa, !is.na(ST42Q02))
 ```
 
 ## select: Pick columns by name
@@ -110,17 +101,36 @@ pisa[, c("Schtype", "State", "PV1MATH")]
 
 ```{r}
 # dplyr approach
-pisa %>% select (Schtype, State, PV1MATH) # equal to select (pisa, Schtype, State, PV1MATH)
+select(pisa, Schtype, State, PV1MATH) 
 ```
 ### other examples for selecting columes by name
 ```{r eval=FALSE}
-pisa %>% select(Schtype:PV1MATH)      # From Schtype through PV1MATH.
-pisa %>% select(-State, -PV1MATH)     # hide those two variables.
-pisa %>% select(contains("MAT"))      # Gets variables containing "MAT"
-pisa %>% select(starts_with("PV"))    # Gets all vars staring with "PV".
-pisa %>% select(ends_with("MAT"))     # All vars ending with "MAT".
-pisa %>% select(matches("^ST\\d{2}"))  # Matches any regular expression.
+select(pisa, Schtype:PV1MATH)      # From Schtype through PV1MATH.
+select(pisa, -State, -PV1MATH)     # hide those two variables.
+select(pisa, contains("MAT"))      # Gets variables containing "MAT"
+select(pisa, starts_with("PV"))    # Gets all vars staring with "PV".
+select(pisa, ends_with("MAT"))     # All vars ending with "MAT".
+select(pisa, matches("^ST\\d{2}"))  # Matches any regular expression.
 ```
+
+## "Chaining" or "Pipelining" - the key feature of dplyr
+
+* Can write commands in a natural order by using the `%>%` infix/pipe operator imported from [magrittr](https://github.com/smbache/magrittr) package (which can be pronounced as "then")
+```{r eval=FALSE}
+# take the thing on the left hand-side and insert it as the first argument on the right hand-side
+# x %>% f(y) equal to f(x,y)
+# x %>% f(y) %>% g(z) equal to g(f(x,y),z)
+```
+```(r results='hide')
+# nesing method to select State and PV1MATH columns and filter for PV1MATH over 400
+filter(select(pisa, State, PV1MATH), PV1MATH > 400)
+```
+```{r}
+# chaining method
+pisa %>%
+    select(State, PV1MATH) %>%
+    filter(PV1MATH > 400)
+```    
 ## arrange: Reorder rows
 
 ```{r results='hide'}
