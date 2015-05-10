@@ -4,27 +4,27 @@ output: html_document
 ---
 
 ## Description of dplyr
-* created by Hadley Wickham (Chief Scientist of Rstudio, author of `ggplot`, `tidyr`)
+* created by Hadley Wickham (Chief Scientist of Rstudio, author of `ggplot`, `tidyr`, `broom`)
 * Great for data exploration and transformation
 * Intuitive to write and easy to read, especially when using the "chaining (%>%)" syntax 
-* Faster than basic R appraoch
+* Faster than basic R approach
 
 ## dplyr functionality
 * Five basic verbs: `filter`, `select`, `arrange`, `mutate`, `summarise` (plus `group_by`)
 * Lots of handy functions (i.e., `mutate_each`, `summarise_each`, `n_distinct`,`sample_n`)
 * Joining (merging) data frames: `left_join`, `right_join`, `inner_join`, `full_join`, `semi_join`, `anti_join`
-* [Window function](http://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html) for calculating ranking, offsets, and more (not covered below)
-* Connecting to Databases using SQLite, PostgreSQL/Redshift, MySQL/MariaDB, BigQuery, MonetDB (not covered below)
+* [Window function](http://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html) for calculating ranking(like `min_rank`), offsets(`lead` and `lag`), and more (not covered below; see [vignette for window-functions](https://github.com/hadley/dplyr/blob/master/vignettes/window-functions.Rmd))
+* Connecting to Databases using SQLite, PostgreSQL/Redshift, MySQL/MariaDB, BigQuery, MonetDB (not covered below; see [vignette for database](http://rpubs.com/justmarkham/dplyr-tutorial))
 
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
                      warning=FALSE, message=FALSE)
 ```
 
-# load packages and an example dataset
+* load packages and an example dataset
 ```{r}
 library(dplyr)
-pisa<-read.csv("PISA12-AUS-motivation.csv")
+pisa<-read.csv("PISA12-AUS-motivation.csv", stringsAsFactors = FALSE)
 ```
 * `tbl_df` creates a "local data frame"
 * Local data frame is simply a wrapper for a data frame that is easier to examine.
@@ -46,9 +46,7 @@ print(pisa, n=20)
 # specify that you want to see ALL columns
 #print(pisa, width = Inf)
 # convert to a normal data frame to see all of the columns
-#data.frame(head(flights))
-# show up to 1000 rows and all columns
-#flights %>% View()
+#data.frame(head(pisa))
 
 # set option to set numbers of columns and rows you want to see
 options(dplyr.width = 20, dplyr.print_min = 20)
@@ -67,6 +65,7 @@ options(dplyr.width = NULL, dplyr.print_min = 10)
 ```{r eval=FALSE}
 # base R approach to view all students in catholic school in NSW
 pisa[pisa$Schtype==1 & pisa$State=="NSW", ]# Base R approach forces you to repeat the data frame's name
+# schtype: 1. catholic, 2. government, 3. independent
 ```
 
 ```{r}
@@ -74,31 +73,21 @@ pisa[pisa$Schtype==1 & pisa$State=="NSW", ]# Base R approach forces you to repea
 filter(pisa, Schtype==1, State=="NSW") # using comma or ampersand to represent AND condition 
 ```
 
-
-## "Chaining" - the key feature of dplyr
-
-* Can write commands in a natural order by using the `%>%` infix/pipe operator imported from [magrittr](https://github.com/smbache/magrittr) package (which can be pronounced as "then")
-```{r eval=FALSE}
-# take the thing on the left hand-side and insert it as the first argument on the right hand-side
-# x %>% f(y) equal to f(x,y)
-# x %>% f(y) %>% g(z) equal to g(f(x,y),z)
-
 ```{r eval=FALSE}
 # to view all students in NSW and VIC 
-pisa %>% filter (State=="NSW" | State=="VIC") #using pipe for OR condition
-filter (pisa, State=="NSW" | State=="VIC")
+filter (pisa, State=="NSW" | State=="VIC") # using pipe to present OR condition
 # you can also use %in% operator
-pisa %>% filter (State %in% c("NSW", "VIC"))
+filter (pisa, State %in% c("NSW", "VIC"))
 ```
-### other examples for selecting columns 
+* other examples for selecting columns 
 ```{r eval=FALSE}
 # between() is a concise alternative for determing if numeric values fall in a range
 # to view students having math scores from 300 to 500
-flights %>% filter(between(PV1MATH, 300, 500))
+filter(pisa, between(PV1MATH, 300, 500))
 
 # is.na() can also be useful when filtering
-# filliter ST42Q02 without missing value
-flights %>% filter(!is.na(ST42Q02))
+# remove missing value from ST42Q02
+filter(pisa, !is.na(ST42Q02))
 ```
 
 ## select: Pick columns by name
@@ -110,17 +99,37 @@ pisa[, c("Schtype", "State", "PV1MATH")]
 
 ```{r}
 # dplyr approach
-pisa %>% select (Schtype, State, PV1MATH) # equal to select (pisa, Schtype, State, PV1MATH)
+select(pisa, Schtype, State, PV1MATH) 
 ```
 ### other examples for selecting columes by name
 ```{r eval=FALSE}
-pisa %>% select(Schtype:PV1MATH)      # From Schtype through PV1MATH.
-pisa %>% select(-State, -PV1MATH)     # hide those two variables.
-pisa %>% select(contains("MAT"))      # Gets variables containing "MAT"
-pisa %>% select(starts_with("PV"))    # Gets all vars staring with "PV".
-pisa %>% select(ends_with("MAT"))     # All vars ending with "MAT".
-pisa %>% select(matches("^ST\\d{2}"))  # Matches any regular expression.
+select(pisa, Schtype:PV1MATH)      # From Schtype through PV1MATH.
+select(pisa, -State, -PV1MATH)     # hide those two variables.
+select(pisa, contains("MAT"))      # Gets variables containing "MAT"
+select(pisa, starts_with("PV"))    # Gets all vars staring with "PV".
+select(pisa, ends_with("MAT"))     # All vars ending with "MAT".
+select(pisa, matches("^ST\\d{2}"))  # Matches any regular expression.
 ```
+
+## "Chaining" or "Pipelining" - the key feature of dplyr
+
+* Can write commands in a natural order by using the `%>%` infix/pipe operator imported from [magrittr](https://github.com/smbache/magrittr) package (which can be pronounced as "then")
+```{r eval=FALSE}
+# take the thing on the left hand-side and insert it as the first argument on the right hand-side
+# x %>% f(y) equal to f(x,y)
+# x %>% f(y) %>% g(z) equal to g(f(x,y),z)
+```
+```{r results='hide'}`
+# nesing method to select State and PV1MATH columns and filter for PV1MATH over 600
+filter(select(pisa, State, PV1MATH), PV1MATH > 600)
+```
+
+```{r}
+# chaining method
+pisa %>%
+    select(State, PV1MATH) %>%
+    filter(PV1MATH > 600)
+```    
 ## arrange: Reorder rows
 
 ```{r results='hide'}
@@ -140,7 +149,7 @@ pisa %>%
 
 ```{r eval=FALSE}
 # base R approach to create a new variable for differece between students' math achivement and science achievement
-pisa$diff_ach <- pisa$PV1MATH / pisa$PV1SCIE
+pisa$diff_ach <- pisa$PV1MATH - pisa$PV1SCIE
 pisa[, c("PV1MATH", "PV1SCIE", "diff_ach")]
 ```
 
@@ -152,13 +161,10 @@ pisa %>%
 
 # store the new variable
 pisa <- pisa %>% mutate(diff_ach = PV1MATH - PV1SCIE) 
+# `transmute` only keeps the new variables
+pisa %>% transmute(diff_ach = PV1MATH - PV1SCIE) 
 ```
-* `transmute` will let you use newly create variables in the same function which is creating the variable in the first place.
-```{r}
-pisa %>% 
-    select(PV1MATH, PV1SCIE) %>%
-    mutate(diff_ach = PV1MATH - PV1SCIE, ratio = diff_ach/PV1MATH, ratio2 = diff_ach/ratio)
-```
+
 ## summarise: Reduce variables to values
 
 ```{r}
@@ -168,71 +174,74 @@ pisa %>% summarise(mean_math = mean(PV1MATH), mean_msc = mean(SCMAT, na.rm = TRU
 ## Combine `mutate` and `summarise` with `group_by`
 *  `mutate` and `summarise` are primarily useful with data that has been grouped by one or more variables
 ``` {r}
-# local data frame is the same as the original one except for grouping State and Schtype
-pisa %>% group_by(State,Schtype) 
+# local data frame is the same as the original one except for grouping State
+pisa %>% group_by(State) 
+```
+
+``` {r}
+# view the mean of math achievement and self-concept for each state
+pisa %>% 
+    group_by(State) %>%
+    summarise(mean_math = mean(PV1MATH), mean_msc = mean(SCMAT, na.rm = TRUE))
 ```
 
 ```{r}
-# n_groups() simply reports the number of groups
-pisa %>% group_by(State,Schtype)  %>% n_groups() 
-```
-
-```{r}
-#  view the number of students and schools in each school type and each 
+#  view the number of total students and number of distinct schools, for each state based on each school type
  pisa %>% 
-   group_by(State,Schtype) %>%
- 	summarise(stu = n(),school=n_distinct(SCHOOLID)) 
-
+    group_by(State,Schtype) %>%
+    summarise(stu_count = n(), school_count = n_distinct(SCHOOLID)) 
 # function `n()` counts the number of rows in a group
 # function `n_distinct(vector)` counts the number of unique items in that vector
- 	
+  
 ```
 * `summarise_each` allows you to apply the same summary function to multiple columns at once
 ```{r}
-# view  max and min scorces of each of achievement scores (reading, math, science)
+# view  max and min achievement scores of three school subjects (reading, math, science) for each state based on eath school type
 pisa %>%
- 	group_by(State,Schtype) %>%
- 	summarise_each(funs(max, min), PV1MATH:PV1SCIE)
+  group_by(State,Schtype) %>%
+  summarise_each(funs(max, min), PV1MATH:PV1SCIE) %>%
+  print (width = Inf)
 # if varibles with missing value, summarise_each(funs(min(., na.rm=TRUE), max(., na.rm=TRUE)), PV1MATH:PV1SCIE))
-``` 	
-* `mutate_each` allows you to apply the same mutate function to multiple columns at once to create new variable
+```   
+* `mutate_each` allows you to apply the same mutate function to multiple columns at once to create new variables
 
 ```{r }
-# for each SCHOOLID, create the mean of students' math and science achievement for each student
-pisa1 <- pisa %>% select (SCHOOLID, PV1MATH:PV1SCIE) # reduce the size of data set for easy presentation in this case
+#for easy presentation, I reduce the size of data set in this case
+pisa1 <- pisa %>% select (SCHOOLID,SCMAT,PV1MATH:PV1SCIE) 
+# create average school math and science achievement for each student
 pisa1 %>%
- 	group_by(SCHOOLID) %>% 
- 	mutate_each(funs(mean_ach = mean(.)), -PV1READ)
-#Here a small bug: when only 1 function is applied, dplyr will keep the orignal names
+  group_by(SCHOOLID) %>% 
+  mutate_each(funs(mean_ach = mean), -SCMAT, -PV1READ)
+#Here a small bug: when only 1 function is applied, dplyr will keep the orignal names (replace the existing variales)
 ```
 
 ```{r}
 # What you can do to avoid this is specifying names of each variable manually 
 pisa1 %>%
-	group_by(SCHOOLID) %>% 
-	mutate_each(funs(mean), mean_math = PV1MATH, mean_scie = PV1SCIE, -PV1READ) 
+  group_by(SCHOOLID) %>% 
+  mutate_each(funs(mean), mean_math = PV1MATH, mean_scie = PV1SCIE, -SCMAT, -PV1READ) 
 ```
 
 ```{r}
 # when 2 functions are applied, variable names works fine
-# calculate the standardardized and centered scores of each student's read, math and science achievement 
+# create the standardized and centered scores of each student's reading, math and science achievement 
 pisa1 %>%
-    mutate_each(funs(std = scale(.), cent = scale(., scale = FALSE)), -SCHOOLID) %>%
+    mutate_each(funs(std = scale(.), cent = scale(., scale = FALSE)), -SCMAT, -SCHOOLID) %>%
     print(width = Inf)
 ```
 ## `do` allows you to apply one unnamed argument 
 ```{r}
-# for each of school type, do simple regression of math achievement on self-concept 
+# for each of school type, do simple regression of math achievement on math self-concept 
 pisa %>% 
-  			group_by(Schtype) %>%
-  			do(
-   			 output = lm(PV1MATH ~ SCMAT, data = .)
- 			 )
+    group_by(Schtype) %>%
+    do(
+    output = lm(PV1MATH ~ SCMAT, data = .)
+      ) 
 # store to a new local data frame
 models <- pisa %>% 
-  			group_by(Schtype) %>%
-  			do(
-   			 output = lm(PV1MATH ~ SCMAT, data = .)
+        group_by(Schtype) %>%
+        do(
+         output = lm(PV1MATH ~ SCMAT, data = .)
           )
 ```
 
@@ -246,8 +255,8 @@ coef_df <- function(x) {
 models %>% do(coef_df(.$output))
 ```
 
-```{r, eval=FALSE}
-# the easy way to extract similar output by using `tidy` function in broom package
+```{r}
+# the easy way to extract similar output by using `tidy` function in `broom` package
 #install.packages("broom") 
 library(broom)
 models %>% do(tidy(.$output)) #`tidy` function can be used for different types of regression models
@@ -257,24 +266,23 @@ models %>% do(tidy(.$output)) #`tidy` function can be used for different types o
 
 ```{r}
 # create two simple data frames
-a <- data_frame(color = c("black","blue","red"), num = 4:6)
-b <- data_frame(color = c("black","blue","pink"), size = c("S","I","P"))
+a <- data.frame(color = c("black","blue","red"), number = 4:6, stringsAsFactors = FALSE)
+b <- data.frame(color = c("black","blue","pink"), size = c("S","M","L"), stringsAsFactors = FALSE)
 
 # the three most common joins
-# include observations found in either "a" or "b"
-full_join(a, b)
+# only include observations found in both "a" and "b" (automatically joins on variables that appear in both tables)
+inner_join(a, b)
 ```
 
 ```{r}
-# only include observations found in both "a" and "b" 
-inner_join(a, b)
+# include observations found in either "a" or "b" 
+full_join(a, b)
 ```
 
 ```{r}
 #include all observations found in "a"
 left_join(a, b)
 ```
-
 * see [vignette for two-tables](https://github.com/hadley/dplyr/blob/master/vignettes/two-table.Rmd) for `right_join`, `left_join`, `semi_join` and `anti_join`
 
 ## Combining data frames
@@ -284,7 +292,6 @@ mydata <- data.frame(
   x = 1:3,
   y = c("a", "b", "c"),
   stringsAsFactors = FALSE) 
-str(mydata)
 ```
 ```{r}
 # when combinding column-wise,the number of rows must match, but row names are ignored
@@ -294,8 +301,9 @@ bind_rows(mydata, data.frame(x = 10, y = "z"))
 ```
 * use`rbind_all` to combind multiple data frames like `do.call(rbind, )`
 
-## References and Recourse
+## References and Resourse
 * [dplyr reference manual and vignettes](http://cran.r-project.org/web/packages/dplyr/)
+* [dplyr tutorial by Hadley Wickham](https://www.dropbox.com/sh/i8qnluwmuieicxc/AAAgt9tIKoIm7WZKIyK25lh6a) at the [useR! 2014 conference](http://user2014.stat.ucla.edu/): excellent, in-depth tutorial with lots of example code (Dropbox link includes slides, code files, and data files)
 * [dplyr tutorial One by Kevin Markham](https://www.youtube.com/watch?v=jWjqLW-u3hc&list=PL5-da3qGB5IBM6DdZ-ZV8mA0oV0U56xaq)
 * [dplyr tutorial Two by Kevin Markham](https://www.youtube.com/watch?v=2mh1PqfsXVI&list=PL5-da3qGB5IBM6DdZ-ZV8mA0oV0U56xaq)
 * [dplyr Cheat Sheet](http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
