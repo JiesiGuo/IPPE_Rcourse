@@ -79,7 +79,7 @@ img {
 <li>Five basic verbs: <code>filter</code>, <code>select</code>, <code>arrange</code>, <code>mutate</code>, <code>summarise</code> (plus <code>group_by</code>)</li>
 <li>Lots of handy functions (i.e., <code>mutate_each</code>, <code>summarise_each</code>, <code>n_distinct</code>,<code>sample_n</code>)</li>
 <li>Joining (merging) data frames: <code>left_join</code>, <code>right_join</code>, <code>inner_join</code>, <code>full_join</code>, <code>semi_join</code>, <code>anti_join</code></li>
-<li><a href="http://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html">Window function</a> for calculating ranking, offsets, and more (not covered below; see <a href="https://github.com/hadley/dplyr/blob/master/vignettes/window-functions.Rmd">vignette for window-functions</a>)</li>
+<li><a href="http://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html">Window function</a> for calculating ranking(like <code>min_rank</code>), offsets(<code>lead</code> and <code>lag</code>), and more (not covered below; see <a href="https://github.com/hadley/dplyr/blob/master/vignettes/window-functions.Rmd">vignette for window-functions</a>)</li>
 <li><p>Connecting to Databases using SQLite, PostgreSQL/Redshift, MySQL/MariaDB, BigQuery, MonetDB (not covered below; see <a href="http://rpubs.com/justmarkham/dplyr-tutorial">vignette for database</a>)</p></li>
 <li><p>load packages and an example dataset</p></li>
 </ul>
@@ -124,8 +124,6 @@ print(pisa, n=20)
 #print(pisa, width = Inf)
 # convert to a normal data frame to see all of the columns
 #data.frame(head(pisa))
-# show up to 1000 rows and all columns
-#pisa %&gt;% View()
 
 # set option to set numbers of columns and rows you want to see
 options(dplyr.width = 20, dplyr.print_min = 20)
@@ -171,7 +169,7 @@ filter(pisa, Schtype==1, State==&quot;NSW&quot;) # using comma or ampersand to r
 ##   (dbl), ST48Q01 (int), ST48Q02 (int), ST48Q03 (int), ST48Q04 (int),
 ##   ST48Q05 (int)</code></pre>
 <pre class="r"><code># to view all students in NSW and VIC 
-filter (pisa, State==&quot;NSW&quot; | State==&quot;VIC&quot;)
+filter (pisa, State==&quot;NSW&quot; | State==&quot;VIC&quot;) # using pipe to present OR condition
 # you can also use %in% operator
 filter (pisa, State %in% c(&quot;NSW&quot;, &quot;VIC&quot;))</code></pre>
 <ul>
@@ -182,7 +180,7 @@ filter (pisa, State %in% c(&quot;NSW&quot;, &quot;VIC&quot;))</code></pre>
 filter(pisa, between(PV1MATH, 300, 500))
 
 # is.na() can also be useful when filtering
-# filliter ST42Q02 without missing value
+# remove missing value from ST42Q02
 filter(pisa, !is.na(ST42Q02))</code></pre>
 </div>
 <div id="select-pick-columns-by-name" class="section level2">
@@ -223,25 +221,24 @@ select(pisa, matches(&quot;^ST\\d{2}&quot;))  # Matches any regular expression.<
 <pre class="r"><code># take the thing on the left hand-side and insert it as the first argument on the right hand-side
 # x %&gt;% f(y) equal to f(x,y)
 # x %&gt;% f(y) %&gt;% g(z) equal to g(f(x,y),z)</code></pre>
-<pre class="r"><code># nesing method to select State and PV1MATH columns and filter for PV1MATH over 400
-filter(select(pisa, State, PV1MATH), PV1MATH &gt; 400)</code></pre>
+<p><code>{r results='hide'}` # nesing method to select State and PV1MATH columns and filter for PV1MATH over 600 filter(select(pisa, State, PV1MATH), PV1MATH &gt; 600)</code></p>
 <pre class="r"><code># chaining method
 pisa %&gt;%
     select(State, PV1MATH) %&gt;%
-    filter(PV1MATH &gt; 400)</code></pre>
-<pre><code>## Source: local data frame [11,946 x 2]
+    filter(PV1MATH &gt; 600)</code></pre>
+<pre><code>## Source: local data frame [2,075 x 2]
 ## 
 ##    State  PV1MATH
-## 1    VIC 561.5439
-## 2    VIC 564.8154
-## 3    VIC 507.3298
-## 4    VIC 601.7370
-## 5    VIC 520.1823
-## 6    VIC 586.7035
-## 7    VIC 659.2226
-## 8    VIC 656.0290
-## 9    VIC 487.1553
-## 10   VIC 613.4990
+## 1    VIC 601.7370
+## 2    VIC 659.2226
+## 3    VIC 656.0290
+## 4    VIC 613.4990
+## 5    VIC 673.1656
+## 6    VIC 604.7749
+## 7    NSW 608.5138
+## 8    ACT 633.3619
+## 9    ACT 659.6121
+## 10   ACT 615.5242
 ## ..   ...      ...</code></pre>
 </div>
 <div id="arrange-reorder-rows" class="section level2">
@@ -273,7 +270,7 @@ pisa %&gt;%
 <li>Create new variables that are functions of existing variables</li>
 </ul>
 <pre class="r"><code># base R approach to create a new variable for differece between students' math achivement and science achievement
-pisa$diff_ach &lt;- pisa$PV1MATH / pisa$PV1SCIE
+pisa$diff_ach &lt;- pisa$PV1MATH - pisa$PV1SCIE
 pisa[, c(&quot;PV1MATH&quot;, &quot;PV1SCIE&quot;, &quot;diff_ach&quot;)]</code></pre>
 <pre class="r"><code># dplyr approach (prints the new variable but does not store it)
 pisa %&gt;%
@@ -294,27 +291,23 @@ pisa %&gt;%
 ## 10 613.4990 638.6050  -25.1060
 ## ..      ...      ...       ...</code></pre>
 <pre class="r"><code># store the new variable
-pisa &lt;- pisa %&gt;% mutate(diff_ach = PV1MATH - PV1SCIE) </code></pre>
-<ul>
-<li><code>transmute</code> will let you use newly create variables in the same function which is creating the variable in the first place.</li>
-</ul>
-<pre class="r"><code>pisa %&gt;% 
-    select(PV1MATH, PV1SCIE) %&gt;%
-    mutate(diff_ach = PV1MATH - PV1SCIE, ratio = diff_ach/PV1MATH, ratio2 = diff_ach/ratio)</code></pre>
-<pre><code>## Source: local data frame [14,481 x 5]
+pisa &lt;- pisa %&gt;% mutate(diff_ach = PV1MATH - PV1SCIE) 
+# `transmute` only keeps the new variables
+pisa %&gt;% transmute(diff_ach = PV1MATH - PV1SCIE) </code></pre>
+<pre><code>## Source: local data frame [14,481 x 1]
 ## 
-##     PV1MATH  PV1SCIE  diff_ach       ratio   ratio2
-## 1  561.5439 583.4950  -21.9511 -0.03909062 561.5439
-## 2  564.8154 627.3219  -62.5065 -0.11066713 564.8154
-## 3  507.3298 556.1731  -48.8433 -0.09627524 507.3298
-## 4  601.7370 668.3514  -66.6144 -0.11070351 601.7370
-## 5  520.1823 573.6106  -53.4283 -0.10271072 520.1823
-## 6  586.7035 599.0675  -12.3640 -0.02107368 586.7035
-## 7  659.2226 751.0630  -91.8404 -0.13931622 659.2226
-## 8  656.0290 760.4812 -104.4522 -0.15921888 656.0290
-## 9  487.1553 565.9642  -78.8089 -0.16177367 487.1553
-## 10 613.4990 638.6050  -25.1060 -0.04092264 613.4990
-## ..      ...      ...       ...         ...      ...</code></pre>
+##     diff_ach
+## 1   -21.9511
+## 2   -62.5065
+## 3   -48.8433
+## 4   -66.6144
+## 5   -53.4283
+## 6   -12.3640
+## 7   -91.8404
+## 8  -104.4522
+## 9   -78.8089
+## 10  -25.1060
+## ..       ...</code></pre>
 </div>
 <div id="summarise-reduce-variables-to-values" class="section level2">
 <h2>summarise: Reduce variables to values</h2>
@@ -330,10 +323,10 @@ pisa %&gt;% summarise(mean_math = mean(PV1MATH), mean_msc = mean(SCMAT, na.rm = 
 <ul>
 <li><code>mutate</code> and <code>summarise</code> are primarily useful with data that has been grouped by one or more variables</li>
 </ul>
-<pre class="r"><code># local data frame is the same as the original one except for grouping State and Schtype
-pisa %&gt;% group_by(State,Schtype) </code></pre>
+<pre class="r"><code># local data frame is the same as the original one except for grouping State
+pisa %&gt;% group_by(State) </code></pre>
 <pre><code>## Source: local data frame [14,481 x 38]
-## Groups: State, Schtype
+## Groups: State
 ## 
 ##    SCHOOLID Schtype State StIDStd Gender ST42Q02 ST42Q04 ST42Q06 ST42Q07
 ## 1         1       3   VIC       1      0       4       2       1       2
@@ -354,37 +347,50 @@ pisa %&gt;% group_by(State,Schtype) </code></pre>
 ##   (dbl), SCMAT (dbl), SUBNORM (dbl), PV1MATH (dbl), PV1READ (dbl), PV1SCIE
 ##   (dbl), ST48Q01 (int), ST48Q02 (int), ST48Q03 (int), ST48Q04 (int),
 ##   ST48Q05 (int), diff_ach (dbl)</code></pre>
-<pre class="r"><code># n_groups() simply reports the number of groups
-pisa %&gt;% group_by(State,Schtype)  %&gt;% n_groups() </code></pre>
-<pre><code>## [1] 24</code></pre>
-<pre class="r"><code>#  view the number of students and schools in each school type and each 
+<pre class="r"><code># view the mean of math achievement and self-concept for each state
+pisa %&gt;% 
+    group_by(State) %&gt;%
+    summarise(mean_math = mean(PV1MATH), mean_msc = mean(SCMAT, na.rm = TRUE))</code></pre>
+<pre><code>## Source: local data frame [8 x 3]
+## 
+##   State mean_math   mean_msc
+## 1   ACT  514.2965 0.15679245
+## 2   NSW  502.2136 0.03164884
+## 3    NT  420.6860 0.10813230
+## 4   QLD  489.1140 0.01268922
+## 5    SA  483.4552 0.02788955
+## 6   TAS  466.6252 0.09225214
+## 7   VIC  498.7467 0.04822279
+## 8    WA  506.0008 0.07120219</code></pre>
+<pre class="r"><code>#  view the number of total students and number of distinct schools, for each state based on each school type
  pisa %&gt;% 
-   group_by(State,Schtype) %&gt;%
-    summarise(stu = n(),school=n_distinct(SCHOOLID)) </code></pre>
+    group_by(State,Schtype) %&gt;%
+    summarise(stu_count = n(), school_count = n_distinct(SCHOOLID)) </code></pre>
 <pre><code>## Source: local data frame [24 x 4]
 ## Groups: State
 ## 
-##    State Schtype  stu school
-## 1    ACT       1  209      8
-## 2    ACT       2  501     26
-## 3    ACT       3  198     11
-## 4    NSW       1  828     43
-## 5    NSW       2 2133    113
-## 6    NSW       3  486     28
-## 7     NT       1   81      5
-## 8     NT       2  256     17
-## 9     NT       3   92      5
-## 10   QLD       1  497     24
-## ..   ...     ...  ...    ...</code></pre>
+##    State Schtype stu_count school_count
+## 1    ACT       1       209            8
+## 2    ACT       2       501           26
+## 3    ACT       3       198           11
+## 4    NSW       1       828           43
+## 5    NSW       2      2133          113
+## 6    NSW       3       486           28
+## 7     NT       1        81            5
+## 8     NT       2       256           17
+## 9     NT       3        92            5
+## 10   QLD       1       497           24
+## ..   ...     ...       ...          ...</code></pre>
 <pre class="r"><code># function `n()` counts the number of rows in a group
 # function `n_distinct(vector)` counts the number of unique items in that vector</code></pre>
 <ul>
 <li><code>summarise_each</code> allows you to apply the same summary function to multiple columns at once</li>
 </ul>
-<pre class="r"><code># view  max and min scorces of each of achievement scores (reading, math, science)
+<pre class="r"><code># view  max and min achievement scores of three school subjects (reading, math, science) for each state based on eath school type
 pisa %&gt;%
     group_by(State,Schtype) %&gt;%
-    summarise_each(funs(max, min), PV1MATH:PV1SCIE)</code></pre>
+    summarise_each(funs(max, min), PV1MATH:PV1SCIE) %&gt;%
+  print (width = Inf)</code></pre>
 <pre><code>## Source: local data frame [24 x 8]
 ## Groups: State
 ## 
@@ -400,91 +406,103 @@ pisa %&gt;%
 ## 9     NT       3    705.1020    707.0194    765.9828    217.4871
 ## 10   QLD       1    745.6068    761.8296    770.7385    207.6725
 ## ..   ...     ...         ...         ...         ...         ...
-## Variables not shown: PV1READ_min (dbl), PV1SCIE_min (dbl)</code></pre>
+##    PV1READ_min PV1SCIE_min
+## 1     284.9128    296.9414
+## 2     186.7547    205.8374
+## 3     311.9384    344.2186
+## 4     250.9104    225.1399
+## 5     164.3003    175.0653
+## 6     189.2408    234.5580
+## 7     148.2614    150.8206
+## 8       3.9113     75.9418
+## 9     157.9649    174.1328
+## 10    209.2092    231.0145
+## ..         ...         ...</code></pre>
 <pre class="r"><code># if varibles with missing value, summarise_each(funs(min(., na.rm=TRUE), max(., na.rm=TRUE)), PV1MATH:PV1SCIE))</code></pre>
 <ul>
 <li><code>mutate_each</code> allows you to apply the same mutate function to multiple columns at once to create new variables</li>
 </ul>
-<pre class="r"><code># for each SCHOOLID, create the mean of students' math and science achievement for each student
-pisa1 &lt;- pisa %&gt;% select (SCHOOLID, PV1MATH:PV1SCIE) # reduce the size of data set for easy presentation in this case
+<pre class="r"><code>#for easy presentation, I reduce the size of data set in this case
+pisa1 &lt;- pisa %&gt;% select (SCHOOLID,SCMAT,PV1MATH:PV1SCIE) 
+# create average school math and science achievement for each student
 pisa1 %&gt;%
     group_by(SCHOOLID) %&gt;% 
-    mutate_each(funs(mean_ach = mean(.)), -PV1READ)</code></pre>
-<pre><code>## Source: local data frame [14,481 x 4]
+    mutate_each(funs(mean_ach = mean), -SCMAT, -PV1READ)</code></pre>
+<pre><code>## Source: local data frame [14,481 x 5]
 ## Groups: SCHOOLID
 ## 
-##    SCHOOLID  PV1MATH  PV1READ  PV1SCIE
-## 1         1 562.9605 582.3127 626.0922
-## 2         1 562.9605 616.7858 626.0922
-## 3         1 562.9605 583.9807 626.0922
-## 4         1 562.9605 649.7978 626.0922
-## 5         1 562.9605 554.1258 626.0922
-## 6         1 562.9605 595.0217 626.0922
-## 7         1 562.9605 705.5102 626.0922
-## 8         1 562.9605 701.6837 626.0922
-## 9         1 562.9605 541.8560 626.0922
-## 10        1 562.9605 604.5681 626.0922
-## ..      ...      ...      ...      ...</code></pre>
-<pre class="r"><code>#Here a small bug: when only 1 function is applied, dplyr will keep the orignal names</code></pre>
+##    SCHOOLID SCMAT  PV1MATH  PV1READ  PV1SCIE
+## 1         1  1.12 562.9605 582.3127 626.0922
+## 2         1  1.12 562.9605 616.7858 626.0922
+## 3         1    NA 562.9605 583.9807 626.0922
+## 4         1    NA 562.9605 649.7978 626.0922
+## 5         1  0.41 562.9605 554.1258 626.0922
+## 6         1  2.26 562.9605 595.0217 626.0922
+## 7         1  0.18 562.9605 705.5102 626.0922
+## 8         1  1.38 562.9605 701.6837 626.0922
+## 9         1  0.65 562.9605 541.8560 626.0922
+## 10        1  0.65 562.9605 604.5681 626.0922
+## ..      ...   ...      ...      ...      ...</code></pre>
+<pre class="r"><code>#Here a small bug: when only 1 function is applied, dplyr will keep the orignal names (replace the existing variales)</code></pre>
 <pre class="r"><code># What you can do to avoid this is specifying names of each variable manually 
 pisa1 %&gt;%
     group_by(SCHOOLID) %&gt;% 
-    mutate_each(funs(mean), mean_math = PV1MATH, mean_scie = PV1SCIE, -PV1READ) </code></pre>
-<pre><code>## Source: local data frame [14,481 x 6]
+    mutate_each(funs(mean), mean_math = PV1MATH, mean_scie = PV1SCIE, -SCMAT, -PV1READ) </code></pre>
+<pre><code>## Source: local data frame [14,481 x 7]
 ## Groups: SCHOOLID
 ## 
-##    SCHOOLID  PV1MATH  PV1READ  PV1SCIE mean_math mean_scie
-## 1         1 561.5439 582.3127 583.4950  562.9605  626.0922
-## 2         1 564.8154 616.7858 627.3219  562.9605  626.0922
-## 3         1 507.3298 583.9807 556.1731  562.9605  626.0922
-## 4         1 601.7370 649.7978 668.3514  562.9605  626.0922
-## 5         1 520.1823 554.1258 573.6106  562.9605  626.0922
-## 6         1 586.7035 595.0217 599.0675  562.9605  626.0922
-## 7         1 659.2226 705.5102 751.0630  562.9605  626.0922
-## 8         1 656.0290 701.6837 760.4812  562.9605  626.0922
-## 9         1 487.1553 541.8560 565.9642  562.9605  626.0922
-## 10        1 613.4990 604.5681 638.6050  562.9605  626.0922
-## ..      ...      ...      ...      ...       ...       ...</code></pre>
+##    SCHOOLID SCMAT  PV1MATH  PV1READ  PV1SCIE mean_math mean_scie
+## 1         1  1.12 561.5439 582.3127 583.4950  562.9605  626.0922
+## 2         1  1.12 564.8154 616.7858 627.3219  562.9605  626.0922
+## 3         1    NA 507.3298 583.9807 556.1731  562.9605  626.0922
+## 4         1    NA 601.7370 649.7978 668.3514  562.9605  626.0922
+## 5         1  0.41 520.1823 554.1258 573.6106  562.9605  626.0922
+## 6         1  2.26 586.7035 595.0217 599.0675  562.9605  626.0922
+## 7         1  0.18 659.2226 705.5102 751.0630  562.9605  626.0922
+## 8         1  1.38 656.0290 701.6837 760.4812  562.9605  626.0922
+## 9         1  0.65 487.1553 541.8560 565.9642  562.9605  626.0922
+## 10        1  0.65 613.4990 604.5681 638.6050  562.9605  626.0922
+## ..      ...   ...      ...      ...      ...       ...       ...</code></pre>
 <pre class="r"><code># when 2 functions are applied, variable names works fine
-# calculate the standardardized and centered scores of each student's read, math and science achievement 
+# create the standardized and centered scores of each student's reading, math and science achievement 
 pisa1 %&gt;%
-    mutate_each(funs(std = scale(.), cent = scale(., scale = FALSE)), -SCHOOLID) %&gt;%
+    mutate_each(funs(std = scale(.), cent = scale(., scale = FALSE)), -SCMAT, -SCHOOLID) %&gt;%
     print(width = Inf)</code></pre>
-<pre><code>## Source: local data frame [14,481 x 10]
+<pre><code>## Source: local data frame [14,481 x 11]
 ## 
-##    SCHOOLID  PV1MATH  PV1READ  PV1SCIE PV1MATH_std PV1READ_std PV1SCIE_std
-## 1         1 561.5439 582.3127 583.4950   0.6972252   0.8083548   0.6981781
-## 2         1 564.8154 616.7858 627.3219   0.7304266   1.1504118   1.1217262
-## 3         1 507.3298 583.9807 556.1731   0.1470234   0.8249054   0.4341362
-## 4         1 601.7370 649.7978 668.3514   1.1051322   1.4779711   1.5182400
-## 5         1 520.1823 554.1258 573.6106   0.2774594   0.5286721   0.6026541
-## 6         1 586.7035 595.0217 599.0675   0.9525620   0.9344589   0.8486725
-## 7         1 659.2226 705.5102 751.0630   1.6885354   2.0307736   2.3175743
-## 8         1 656.0290 701.6837 760.4812   1.6561246   1.9928054   2.4085929
-## 9         1 487.1553 541.8560 565.9642  -0.0577212   0.4069259   0.5287585
-## 10        1 613.4990 604.5681 638.6050   1.2245011   1.0291825   1.2307674
-## ..      ...      ...      ...      ...         ...         ...         ...
-##    PV1MATH_cent PV1READ_cent PV1SCIE_cent
-## 1     68.701045      81.4674      72.2444
-## 2     71.972545     115.9405     116.0713
-## 3     14.486945      83.1354      44.9225
-## 4    108.894145     148.9525     157.1008
-## 5     27.339445      53.2805      62.3600
-## 6     93.860645      94.1764      87.8169
-## 7    166.379745     204.6649     239.8124
-## 8    163.186145     200.8384     249.2306
-## 9     -5.687555      41.0107      54.7136
-## 10   120.656145     103.7228     127.3544
-## ..          ...          ...          ...</code></pre>
+##    SCHOOLID SCMAT  PV1MATH  PV1READ  PV1SCIE PV1MATH_std PV1READ_std
+## 1         1  1.12 561.5439 582.3127 583.4950   0.6972252   0.8083548
+## 2         1  1.12 564.8154 616.7858 627.3219   0.7304266   1.1504118
+## 3         1    NA 507.3298 583.9807 556.1731   0.1470234   0.8249054
+## 4         1    NA 601.7370 649.7978 668.3514   1.1051322   1.4779711
+## 5         1  0.41 520.1823 554.1258 573.6106   0.2774594   0.5286721
+## 6         1  2.26 586.7035 595.0217 599.0675   0.9525620   0.9344589
+## 7         1  0.18 659.2226 705.5102 751.0630   1.6885354   2.0307736
+## 8         1  1.38 656.0290 701.6837 760.4812   1.6561246   1.9928054
+## 9         1  0.65 487.1553 541.8560 565.9642  -0.0577212   0.4069259
+## 10        1  0.65 613.4990 604.5681 638.6050   1.2245011   1.0291825
+## ..      ...   ...      ...      ...      ...         ...         ...
+##    PV1SCIE_std PV1MATH_cent PV1READ_cent PV1SCIE_cent
+## 1    0.6981781    68.701045      81.4674      72.2444
+## 2    1.1217262    71.972545     115.9405     116.0713
+## 3    0.4341362    14.486945      83.1354      44.9225
+## 4    1.5182400   108.894145     148.9525     157.1008
+## 5    0.6026541    27.339445      53.2805      62.3600
+## 6    0.8486725    93.860645      94.1764      87.8169
+## 7    2.3175743   166.379745     204.6649     239.8124
+## 8    2.4085929   163.186145     200.8384     249.2306
+## 9    0.5287585    -5.687555      41.0107      54.7136
+## 10   1.2307674   120.656145     103.7228     127.3544
+## ..         ...          ...          ...          ...</code></pre>
 </div>
 <div id="do-allows-you-to-apply-one-unnamed-argument" class="section level2">
 <h2><code>do</code> allows you to apply one unnamed argument</h2>
-<pre class="r"><code># for each of school type, do simple regression of math achievement on self-concept 
+<pre class="r"><code># for each of school type, do simple regression of math achievement on math self-concept 
 pisa %&gt;% 
-            group_by(Schtype) %&gt;%
-            do(
-             output = lm(PV1MATH ~ SCMAT, data = .)
-             )</code></pre>
+    group_by(Schtype) %&gt;%
+    do(
+    output = lm(PV1MATH ~ SCMAT, data = .)
+            ) </code></pre>
 <pre><code>## Source: local data frame [3 x 2]
 ## Groups: &lt;by row&gt;
 ## 
@@ -515,7 +533,7 @@ models %&gt;% do(coef_df(.$output))</code></pre>
 ## 4       SCMAT  43.62363 1.250909  34.87355 1.722351e-241
 ## 5 (Intercept) 531.78694 1.947377 273.07860  0.000000e+00
 ## 6       SCMAT  46.69097 2.010283  23.22607 1.136833e-103</code></pre>
-<pre class="r"><code># the easy way to extract similar output by using `tidy` function in broom package
+<pre class="r"><code># the easy way to extract similar output by using `tidy` function in `broom` package
 #install.packages(&quot;broom&quot;) 
 library(broom)
 models %&gt;% do(tidy(.$output)) #`tidy` function can be used for different types of regression models</code></pre>
@@ -533,34 +551,28 @@ models %&gt;% do(tidy(.$output)) #`tidy` function can be used for different type
 <div id="joining-merging-data-frames" class="section level2">
 <h2>Joining (merging) data frames</h2>
 <pre class="r"><code># create two simple data frames
-a &lt;- data_frame(color = c(&quot;black&quot;,&quot;blue&quot;,&quot;red&quot;), num = 4:6)
-b &lt;- data_frame(color = c(&quot;black&quot;,&quot;blue&quot;,&quot;pink&quot;), size = c(&quot;S&quot;,&quot;I&quot;,&quot;P&quot;))
+a &lt;- data.frame(color = c(&quot;black&quot;,&quot;blue&quot;,&quot;red&quot;), number = 4:6, stringsAsFactors = FALSE)
+b &lt;- data.frame(color = c(&quot;black&quot;,&quot;blue&quot;,&quot;pink&quot;), size = c(&quot;S&quot;,&quot;M&quot;,&quot;L&quot;), stringsAsFactors = FALSE)
 
 # the three most common joins
-# include observations found in either &quot;a&quot; or &quot;b&quot;
-full_join(a, b)</code></pre>
-<pre><code>## Source: local data frame [4 x 3]
-## 
-##   color num size
-## 1 black   4    S
-## 2  blue   5    I
-## 3   red   6   NA
-## 4  pink  NA    P</code></pre>
-<pre class="r"><code># only include observations found in both &quot;a&quot; and &quot;b&quot; 
+# only include observations found in both &quot;a&quot; and &quot;b&quot; (automatically joins on variables that appear in both tables)
 inner_join(a, b)</code></pre>
-<pre><code>## Source: local data frame [2 x 3]
-## 
-##   color num size
-## 1 black   4    S
-## 2  blue   5    I</code></pre>
+<pre><code>##   color number size
+## 1 black      4    S
+## 2  blue      5    M</code></pre>
+<pre class="r"><code># include observations found in either &quot;a&quot; or &quot;b&quot; 
+full_join(a, b)</code></pre>
+<pre><code>##   color number size
+## 1 black      4    S
+## 2  blue      5    M
+## 3   red      6 &lt;NA&gt;
+## 4  pink     NA    L</code></pre>
 <pre class="r"><code>#include all observations found in &quot;a&quot;
 left_join(a, b)</code></pre>
-<pre><code>## Source: local data frame [3 x 3]
-## 
-##   color num size
-## 1 black   4    S
-## 2  blue   5    I
-## 3   red   6   NA</code></pre>
+<pre><code>##   color number size
+## 1 black      4    S
+## 2  blue      5    M
+## 3   red      6 &lt;NA&gt;</code></pre>
 <ul>
 <li>see <a href="https://github.com/hadley/dplyr/blob/master/vignettes/two-table.Rmd">vignette for two-tables</a> for <code>right_join</code>, <code>left_join</code>, <code>semi_join</code> and <code>anti_join</code></li>
 </ul>
@@ -571,11 +583,7 @@ left_join(a, b)</code></pre>
 mydata &lt;- data.frame(
   x = 1:3,
   y = c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;),
-  stringsAsFactors = FALSE) 
-str(mydata)</code></pre>
-<pre><code>## 'data.frame':    3 obs. of  2 variables:
-##  $ x: int  1 2 3
-##  $ y: chr  &quot;a&quot; &quot;b&quot; &quot;c&quot;</code></pre>
+  stringsAsFactors = FALSE) </code></pre>
 <pre class="r"><code># when combinding column-wise,the number of rows must match, but row names are ignored
 bind_cols(mydata, data.frame(z = 3:1)) </code></pre>
 <pre><code>##   x y z
@@ -595,10 +603,11 @@ bind_rows(mydata, data.frame(x = 10, y = &quot;z&quot;)) </code></pre>
 <li>use<code>rbind_all</code> to combind multiple data frames like <code>do.call(rbind, )</code></li>
 </ul>
 </div>
-<div id="references-and-recourse" class="section level2">
-<h2>References and Recourse</h2>
+<div id="references-and-resourse" class="section level2">
+<h2>References and Resourse</h2>
 <ul>
 <li><a href="http://cran.r-project.org/web/packages/dplyr/">dplyr reference manual and vignettes</a></li>
+<li><a href="https://www.dropbox.com/sh/i8qnluwmuieicxc/AAAgt9tIKoIm7WZKIyK25lh6a">dplyr tutorial by Hadley Wickham</a> at the <a href="http://user2014.stat.ucla.edu/">useR! 2014 conference</a>: excellent, in-depth tutorial with lots of example code (Dropbox link includes slides, code files, and data files)</li>
 <li><a href="https://www.youtube.com/watch?v=jWjqLW-u3hc&amp;list=PL5-da3qGB5IBM6DdZ-ZV8mA0oV0U56xaq">dplyr tutorial One by Kevin Markham</a></li>
 <li><a href="https://www.youtube.com/watch?v=2mh1PqfsXVI&amp;list=PL5-da3qGB5IBM6DdZ-ZV8mA0oV0U56xaq">dplyr tutorial Two by Kevin Markham</a></li>
 <li><a href="http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf">dplyr Cheat Sheet</a></li>
