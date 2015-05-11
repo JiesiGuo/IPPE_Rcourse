@@ -16,10 +16,6 @@ output: html_document
 * [Window function](http://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html) for calculating ranking(like `min_rank`), offsets(`lead` and `lag`), and more (not covered below; see [vignette for window-functions](https://github.com/hadley/dplyr/blob/master/vignettes/window-functions.Rmd))
 * Connecting to Databases using SQLite, PostgreSQL/Redshift, MySQL/MariaDB, BigQuery, MonetDB (not covered below; see [vignette for database](http://rpubs.com/justmarkham/dplyr-tutorial))
 
-```{r global_options, include=FALSE}
-knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
-                     warning=FALSE, message=FALSE)
-```
 
 * load packages and an example dataset
 ```{r}
