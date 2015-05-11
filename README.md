@@ -16,13 +16,17 @@ Introduction
 ### Package installation
 
 ```r
-install.packages("devtools") #if you haven't installed it.
+# for dplyr
+install.packages("dplyr") 
+# sjPlot
+install.packages("sjPlot")
+install.packages("sjmisc") # somes functions in `sjPlot` have been moved into the sjmisc-package
+install.packages("devtools") 
 library(devtools)
 devtools::install_github("sjPlot/devel") #  install the latest development snapshot of `sjPlot`
-install.packages("sjmisc") # somes functions in `sjPlot` have been moved into the sjmisc-package
-install.packages("effects") # plot interaction effects based on `sjPlot`	
-install.packages("dplyr")
-install.packages("psych")
+install.packages(c("haven", "effects") # used in `sjPlot` introduction
+# for EFA
+install,packages("psych") #if you haven't installed it.
 ```
 
 Links to topics
