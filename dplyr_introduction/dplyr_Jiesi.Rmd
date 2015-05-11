@@ -11,7 +11,7 @@ output: html_document
 
 ## dplyr functionality
 * Five basic verbs: `filter`, `select`, `arrange`, `mutate`, `summarise` (plus `group_by`)
-* Lots of handy functions (i.e., `mutate_each`, `summarise_each`, `n_distinct`,`sample_n`)
+* Lots of handy functions (i.e., `mutate_each`, `summarise_each`, `n_distinct`)
 * Joining (merging) data frames: `left_join`, `right_join`, `inner_join`, `full_join`, `semi_join`, `anti_join`
 * [Window function](http://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html) for calculating ranking(like `min_rank`), offsets(`lead` and `lag`), and more (not covered below; see [vignette for window-functions](https://github.com/hadley/dplyr/blob/master/vignettes/window-functions.Rmd))
 * Connecting to Databases using SQLite, PostgreSQL/Redshift, MySQL/MariaDB, BigQuery, MonetDB (not covered below; see [vignette for database](http://rpubs.com/justmarkham/dplyr-tutorial))
@@ -121,7 +121,7 @@ select(pisa, matches("^ST\\d{2}"))  # Matches any regular expression.
 ```
 
 ```{r results='hide'}
-# nesing method to select State and PV1MATH columns and filter for PV1MATH over 600
+# nesting method to select State and PV1MATH columns and filter for PV1MATH over 600
 filter(select(pisa, State, PV1MATH), PV1MATH > 600)
 ```
 
