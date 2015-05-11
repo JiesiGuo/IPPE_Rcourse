@@ -18,6 +18,7 @@ knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
 ```
 
 ```{r}
+library(GPArotation)
 library(psych)
 library(dplyr)
 # data preparation

@@ -13,6 +13,7 @@ output: html_document
 * the rotation does not alter the fit of the factor solution
 
 ```{r}
+library(GPArotation)
 library(psych)
 library(dplyr)
 # data preparation

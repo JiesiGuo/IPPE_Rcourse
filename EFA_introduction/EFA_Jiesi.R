@@ -4,7 +4,7 @@ output: html_document
 ---
 
 ## Exploratory Data Analysis (EFA)
-
+library(GPArotation)
 library(psych)
 library(dplyr)
 # data preparation
