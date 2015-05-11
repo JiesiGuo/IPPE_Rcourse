@@ -90,12 +90,12 @@ sjp.lm(model1, type = "ma",
 sjp.lm(model1, type = "pred")         
 ```
 
-* plotting interaction effect using `sjp.int`, which accepts _lm_, _glm_ and _lme4_.[see more examples](http://www.strengejacke.de/sjPlot/sjp.int/)
+* plotting interaction effect using `sjp.int`, which can be used in _lm_, _glm_ and _lme4_.[see more examples](http://www.strengejacke.de/sjPlot/sjp.int/)
 ```{r eval = FALSE}
 #install.packages("effects") 
 ```
 ```{r}
-#Plotting interaction betweenn self-concept and intrinsic value in preiding math workethic
+#Plotting interaction betweenn self-concept and utility value in preiding math work ethic
 mod_inter <- lm(scale(MATWKETH) ~ scale(SCMAT)*scale(INSTMOT), data=pisa, x = TRUE)
 sjt.lm(mod_inter)
 ```
@@ -171,9 +171,8 @@ anova(modelRandomInt, modelRandomSlope)
 sjp.lmer(modelRandomSlope, type = "fe.std")
 # View random effects across groups
 sjp.lmer(modelRandomSlope)
-# note: random effects can not be ploted in this version
 ```
-* note: random effects can not be ploted in this version
+* note: random slopes can not be plotted in this version
 ```{r}
 # creat a function to plot random slopes
 visualize.lme <- function (model, coefficient, group, ...){
