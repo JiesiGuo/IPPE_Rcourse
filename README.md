@@ -24,7 +24,7 @@ install.packages("sjmisc") # somes functions in `sjPlot` have been moved into th
 install.packages("devtools") 
 library(devtools)
 devtools::install_github("sjPlot/devel") #  install the latest development snapshot of `sjPlot`
-install.packages(c("haven", "effects") # used in `sjPlot` introduction
+install.packages(c("haven", "effects")) # used in `sjPlot` introduction
 # for EFA
 install,packages("psych") #if you haven't installed it.
 ```
