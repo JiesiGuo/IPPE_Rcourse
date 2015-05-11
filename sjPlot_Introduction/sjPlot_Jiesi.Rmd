@@ -66,7 +66,7 @@ sjt.corr(pisa[,20:28],
 ```{r}
 # model1: math behavior is predicted by math self-concept, intrinsic value, utility value and gender
 model1 <- lm(MATBEH ~ SCMAT + INTMAT + INSTMOT + Gender, data=pisa)
-# model2: math workethic is predicted by math self-concept,intrinsic value, utility value and gender
+# model2: math work ethic is predicted by math self-concept,intrinsic value, utility value and gender
 model2 <- lm(MATWKETH ~ SCMAT + INTMAT + INSTMOT + Gender, data=pisa)
 ```
 
@@ -201,6 +201,7 @@ anova(modelRandomInt, modelRandomSlope)
 sjp.lmer(modelRandomSlope, type = "fe.std")
 # View random effects across groups
 sjp.lmer(modelRandomSlope)
+
 ```
 * note: random effects can not be ploted in this version
 ```{r}
@@ -229,7 +230,7 @@ visualize.lme <- function (model, coefficient, group, ...){
 
 visualize.lme(modelRandomSlope, "INSTMOT", "SCHOOLID", 
               xlab="Math workethic", ylab="Utility value",
-              main="Effect of utility value on workethic stratified by school")
+              main="Effect of utility value on work ethic stratified by school")
 ```
 
 * Plotting random effects of generalized linear mixed effects models using [sjp.glmer](http://www.strengejacke.de/sjPlot/sjp.glmer/) (not cover here)
