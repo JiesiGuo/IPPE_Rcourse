@@ -122,7 +122,36 @@ anova(modelRandomInt, modelRandomSlope)
 sjp.lmer(modelRandomSlope, type = "fe.std")
 # View random effects across groups
 sjp.lmer(modelRandomSlope)
-# note: random effects can not be ploted in this version
+```{r}
+
+* note: random effects can not be ploted in this version
+# creat a function to plot random slopes
+visualize.lme <- function (model, coefficient, group, ...){
+  r <- ranef(model)[[group]]
+  f <- fixef(model)
+  
+  effects <- data.frame(r[,1]+f[1], r[,2]+f[2])
+  
+  number.lines <- nrow(effects)
+  
+  predictor.min <- tapply(model@frame[[coefficient]], model@frame[[group]], min, na.rm=TRUE)
+  predictor.max <- tapply(model@frame[[coefficient]], model@frame[[group]], max, na.rm=TRUE)
+  
+  outcome.min <- min(predict(model), na.rm=TRUE)
+  outcome.max <- max(predict(model), na.rm=TRUE)
+  
+  plot (c(min(predictor.min),max(predictor.max)),c(outcome.min,outcome.max), type="n", ...)
+  
+  for (i in 1:number.lines){
+    expression <- function(x) {effects[i,1] + (effects[i,2] * x) }
+    curve(expression, from=predictor.min[i], to=predictor.max[i], add=TRUE)
+  }
+}
+
+visualize.lme(modelRandomSlope, "INSTMOT", "SCHOOLID", 
+              xlab="Math workethic", ylab="Utility value",
+              main="Effect of utility value on workethic stratified by school")
+```
 # Plotting random effects of generalized linear mixed effects models using [sjp.glmer](http://www.strengejacke.de/sjPlot/sjp.glmer/) (not cover here)
 # plot principal component analyses (PCA) using `sjp.pca`
 # we need to specify the items which are used in PCA

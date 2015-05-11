@@ -173,7 +173,7 @@ sjp.lmer(modelRandomSlope, type = "fe.std")
 sjp.lmer(modelRandomSlope)
 # note: random effects can not be ploted in this version
 ```
-* Unfortunately, `sjPlot` can not allow to plot random slopes so far. 
+* note: random effects can not be ploted in this version
 ```{r}
 # creat a function to plot random slopes
 visualize.lme <- function (model, coefficient, group, ...){
