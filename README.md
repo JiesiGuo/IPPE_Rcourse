@@ -18,7 +18,7 @@ Introduction
 ```r
 # for dplyr
 install.packages("dplyr") 
-# sjPlot
+# for sjPlot
 install.packages("sjPlot")
 install.packages("sjmisc") # somes functions in `sjPlot` have been moved into the sjmisc-package
 install.packages("devtools") 
