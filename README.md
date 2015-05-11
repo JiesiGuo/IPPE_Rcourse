@@ -26,7 +26,7 @@ library(devtools)
 devtools::install_github("sjPlot/devel") #  install the latest development snapshot of `sjPlot`
 install.packages(c("haven", "effects")) # used in `sjPlot` introduction
 # for EFA
-install,packages("psych") #if you haven't installed it.
+install.packages(c("psych", "GPArotation")) #if you haven't installed it.
 ```
 
 Links to topics
