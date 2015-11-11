@@ -15,6 +15,8 @@ pisa
 
 # you can specify that you want to see more rows
 print(pisa, n=20)
+# slice() certain row numbers
+slice(pisa, 1:5)
 # specify that you want to see ALL rows (don't run this!)
 print(pisa, n = Inf)
 # specify that you want to see ALL columns
@@ -83,6 +85,9 @@ pisa %>% select(matches("^ST\\d{2}"))  # Matches any regular expression.
 
 # base R approach to select State and PV1MATH columns and sort by PV1MATH
 pisa[order(pisa$PV1MATH), c("State", "PV1MATH")]
+
+## rename: specific columns
+rename(pisa, SES = ESCS) 
 
 # dplyr approach
 pisa %>%

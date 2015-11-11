@@ -24,8 +24,17 @@ knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
 * load packages and an example dataset
 ```{r}
 library(dplyr)
+```
+
+```{r include=FALSE}
+setwd("C:/Users/S00174624/Google Drive/IPPE_Rcourse_Jiesi")
 pisa<-read.csv("PISA12-AUS-motivation.csv", stringsAsFactors = FALSE)
 ```
+
+```{r eval=FALSE}
+pisa<-read.csv("PISA12-AUS-motivation.csv", stringsAsFactors = FALSE)
+```
+
 * `tbl_df` creates a "local data frame"
 * Local data frame is simply a wrapper for a data frame that is easier to examine.
 
@@ -41,10 +50,12 @@ pisa
 ```{r eval=FALSE}
 # you can specify that you want to see more rows
 print(pisa, n=20)
+# slice() certain row numbers
+slice(pisa, 1:5)
 # specify that you want to see ALL rows (don't run this!)
-#print(pisa, n = Inf)
+print(pisa, n = Inf)
 # specify that you want to see ALL columns
-#print(pisa, width = Inf)
+print(pisa, width = Inf)
 # convert to a normal data frame to see all of the columns
 #data.frame(head(pisa))
 
@@ -136,6 +147,12 @@ pisa %>%
 ```{r results='hide'}
 # base R approach to select State and PV1MATH columns and sort by PV1MATH
 pisa[order(pisa$PV1MATH), c("State", "PV1MATH")]
+```
+
+## rename: specific columns
+```{r results='hide'}
+# Reman ESCS to SES
+rename(pisa, SES = ESCS)
 ```
 
 ```{r}
