@@ -147,6 +147,12 @@ pisa %>%
     select(State, PV1MATH) %>%
     arrange(PV1MATH) #use `desc` for descending: arrange(desc(PV1MATH))
 ```
+
+## rename: specific columns
+```{r results='hide'}
+# Reman ESCS to SES
+rename(pisa, SES = ESCS)
+```
 ## mutate: Add new variables
 
 * Create new variables that are functions of existing variables

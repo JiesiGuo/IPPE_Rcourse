@@ -142,17 +142,18 @@ pisa %>%
     select(State, PV1MATH) %>%
     filter(PV1MATH > 600)
 ```    
-## arrange: Reorder rows
-
-```{r results='hide'}
-# base R approach to select State and PV1MATH columns and sort by PV1MATH
-pisa[order(pisa$PV1MATH), c("State", "PV1MATH")]
-```
 
 ## rename: specific columns
 ```{r results='hide'}
 # Reman ESCS to SES
 rename(pisa, SES = ESCS)
+```
+
+## arrange: Reorder rows
+
+```{r results='hide'}
+# base R approach to select State and PV1MATH columns and sort by PV1MATH
+pisa[order(pisa$PV1MATH), c("State", "PV1MATH")]
 ```
 
 ```{r}

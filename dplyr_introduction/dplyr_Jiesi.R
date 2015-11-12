@@ -86,13 +86,14 @@ pisa %>% select(matches("^ST\\d{2}"))  # Matches any regular expression.
 # base R approach to select State and PV1MATH columns and sort by PV1MATH
 pisa[order(pisa$PV1MATH), c("State", "PV1MATH")]
 
-## rename: specific columns
-rename(pisa, SES = ESCS) 
-
 # dplyr approach
 pisa %>%
     select(State, PV1MATH) %>%
     arrange(PV1MATH) #use `desc` for descending: arrange(desc(PV1MATH))
+
+## rename: specific columns
+rename(pisa, SES = ESCS) 
+
 ## mutate: Add new variables
 
 # Create new variables that are functions of existing variables
