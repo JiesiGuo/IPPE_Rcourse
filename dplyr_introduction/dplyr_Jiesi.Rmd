@@ -213,6 +213,9 @@ pisa %>%
 # function `n_distinct(vector)` counts the number of unique items in that vector
  	
 ```
+## Three new vector functions
+
+
 * `summarise_each` allows you to apply the same summary function to multiple columns at once
 ```{r}
 # view  max and min achievement scores of three school subjects (reading, math, science) for each state based on eath school type
