@@ -214,7 +214,7 @@ pisa %>%
  	
 ```
 ## Three new vector functions
-
+* `coalesce` replacement
 
 * `summarise_each` allows you to apply the same summary function to multiple columns at once
 ```{r}
